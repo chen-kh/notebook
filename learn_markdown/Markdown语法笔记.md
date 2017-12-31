@@ -74,7 +74,7 @@ Hello world
 ## 7. 区段元素
 - 行内链接This is [an example](http://example.com/ "Title") inline link.  
 - See my [About](/about/) page for details. // 这里是相对路径  
-- This is [Google] [link] reference-style link.  
+- This is [Google][link] reference-style link.  
 - 连接到本地的文件，例如[分类图](E:\\毕业设计\\微信图片_20171214203534.png)  
 - [Google][link]  
 - 自动链接<http://www.google.com/>
@@ -82,14 +82,27 @@ Hello world
 ## 8. 插入图片
 - 行内式：![GitHub](https://avatars2.githubusercontent.com/u/3265208?v=3&s=100 "GitHub,Social Coding")就是这样
 - 参考式：![GitHub][github]就是这样
-
+## 9. 链接标题与生成目录
+### 9.1 链接到标题
+可以直接使用 <u>\[内容](#标题地址)</u> 的形式, 例如链接到[3. 引用](#3-引用)， 注意括号里面\(#链接到的地方)不能有英文句号。因此无法链接到带有“.”的次级标题，如“3.1 文本应用”是无法链接到的。
+### 9.1 生成目录
+示例如下：  
+> * [1. 生成目录](#1)
+>     * [1.1 第二级1](#1.1)
+>     * [1.2 第二级2](#1.2)
+> * [2.结语](#2)
+> <h2 id="1">1. 生成目录</h2>
+> 这是一个自动生成目录的语法。下面是下一级目录：
+> <h3 id="1.1">1.1 第二级说明1</h3>
+> 这是二级目录的一个测试文本。
+> <h3 id="1.2">1.2 第二级说明2</h3>
+> 这是二级目录的第二个测试文本。
+> <h2 id="2">2. 结语</h2>
 
 ## 参考链接
 
 [1] [Markdown 语法说明 (简体中文版)](http://wowubuntu.com/markdown/)  
 [2] [Learning-Markdown (Markdown 入门参考)](http://xianbai.me/learn-md/article/about/readme.html)  
-
-
 
 
 [github]: https://avatars2.githubusercontent.com/u/3265208?v=3&s=100 "GitHub,Social Coding"
