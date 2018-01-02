@@ -13,7 +13,7 @@ github上添加数学公式有很多种方法，总结起来两种形式：
 ## 生成公式图片链接
 CodeCogs 提供了一个[在线 LaTeX 编辑器](https://link.jianshu.com/?t=https://www.codecogs.com/latex/eqneditor.php)，可以将输入的数学公式转换为图片，并自动生成 HTML 代码（也支持其他格式）。
 比如输入下面的代码：  
-ax^{2} + by^{2} + c = 0
+ax^{2} + by^{2} + c = 0  
 便可以得到：  
 ![](https://latex.codecogs.com/png.latex?ax^{2}&space;&plus;&space;by^{2}&space;&plus;&space;c&space;=&space;0)  
 由于 Markdown 允许嵌入 HTML，所以直接把生成的代码粘贴过去就可以了。
