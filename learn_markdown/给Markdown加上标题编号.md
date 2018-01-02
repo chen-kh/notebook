@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="auto-number-title.css" />
+<link rel="stylesheet" type="text/css" href="https://github.com/chen-kh/notebook/blob/master/learn_markdown/auto-number-title.css" />
 
 ---------------------------------------
     如何给Markdown文件自动加上标题编号
