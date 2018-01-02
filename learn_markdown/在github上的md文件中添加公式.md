@@ -19,5 +19,5 @@ ax^{2} + by^{2} + c = 0
 由于 Markdown 允许嵌入 HTML，所以直接把生成的代码粘贴过去就可以了。
 另例如：  
 质能方程：<a href="https://www.codecogs.com/eqnedit.php?latex=\huge&space;E=mc^{2}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\normal&space;E=mc^{2}" title="\huge E=mc^{2}" /></a>  
-此在线编辑器功能欠打，可以选择文件输出格式，支持png,gif等多种；还支持多种表现写法，支持html, url等。
+此在线编辑器功能欠打，可以选择文件输出格式，支持 `png,gif` 等多种；还支持多种表现写法，支持 `html, url` 等。
 
