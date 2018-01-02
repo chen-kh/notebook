@@ -7,10 +7,13 @@
 
 
 ## 2. 粗体和斜体
-- *VSCODE*：斜体效果  
-- **VSCODE**：加粗效果  
-- ***VSCODE***：斜体加粗效果  
+- 斜体效果：*VSCODE*  
+- 加粗效果：**VSCODE**  
+- 斜体加粗效果：***VSCODE***  
 - ~~删除线~~：删除线  
+- 居中：<p align="center">我是居中</p>
+- 左对齐：<p align="left">我是左对齐</p>
+- 右对齐：<p align="right">我是右对齐</p>
 - Markdown没有下划线原生语法，因为会和链接的默认样式产生混淆。解决方法是使用行内 HTML. 比如：<u>Underlined Text</u>和<span style="border-bottom:2px dashed yellow;">所添加的需要加下划线的行内文字</span>，其中后者三个参数分别为[border-bottom-width](http://www.w3school.com.cn/cssref/pr_border-bottom_width.asp), [border-bottom-style](http://www.w3school.com.cn/cssref/pr_border-bottom_style.asp), [border-bottom-color](http://www.w3school.com.cn/cssref/pr_border-bottom_color.asp)
 - 首行缩进：可以在段首加入\&ensp;来输入一个空格。加入\&emsp;来输入两个空格。  
 &emsp;&emsp;一语未了，只听后院中有人笑声，说：“我来迟了，不曾迎接远客！"  
