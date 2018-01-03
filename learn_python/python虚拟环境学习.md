@@ -46,8 +46,8 @@ rm -rf [virtual dir]
 ```sh
 pip install virtualenvwrapper
 ```
-&emsp;&emsp;此时还不能使用virtualenvwrapper，默认virtualenvwrapper安装在/usr/local/bin下面，实际上需要运行virtualenvwrapper.sh文件才行。
-**设置环境变量**  
+&emsp;&emsp;此时还不能使用virtualenvwrapper，默认virtualenvwrapper安装在/usr/local/bin下面，实际上需要运行virtualenvwrapper.sh文件才行。  
+**设置环境变量：**  
 &emsp;&emsp;把下面两行添加到~/.bashrc（或者~/.zshrc）里。  
 ```sh
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
@@ -67,6 +67,7 @@ rmvirtualenv [虚拟环境名称] # 删除虚拟环境
 deactivate # 退出虚拟环境
 ```
 ## 3. 注意点
+待补充
 
 ## 参考资料
 [1] [Python虚拟环境](https://github.com/lzjun567/note/blob/master/note/python/virtualenv.md)  
