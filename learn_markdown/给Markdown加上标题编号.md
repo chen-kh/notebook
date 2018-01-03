@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="https://github.com/chen-kh/notebook/blob/master/learn_markdown/auto-number-title.css" />
+<link rel="stylesheet" type="text/css" href="auto-number-title.css" />
 
 ---------------------------------------
     如何给Markdown文件自动加上标题编号
@@ -7,6 +7,16 @@
 ---------------------------------------
 # 如何给Markdown文件自动加上标题编号
 **转自参考资料[1]**  
+<!-- TOC -->
+
+- [如何给Markdown文件自动加上标题编号](#如何给markdown文件自动加上标题编号)
+    - [问题描述](#问题描述)
+    - [解决方法](#解决方法)
+    - [进一步优化](#进一步优化)
+    - [补充说明](#补充说明)
+    - [参考资料](#参考资料)
+
+<!-- /TOC -->
 ## 问题描述
 
 我们都知道，MarkDown可以通过######等标记添加不同层次的标题，非常方便。但是问题来了：如何给标题加上编号呢？
