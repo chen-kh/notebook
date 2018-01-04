@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" href="auto-number-title.css" />
-
 ---------------------------------------
     如何给Markdown文件自动加上标题编号
     @author chenkh

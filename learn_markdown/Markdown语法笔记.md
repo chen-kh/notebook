@@ -1,12 +1,12 @@
 # markdown语法笔记  
 **注**：Markdown 并没有一个整体规范的写法，markdown只是提供了一些基本的规则，复杂的功能需要开发者自己实现。markdown有很多种，比如github使用github favorable markdown，基本语法大致相同，但是有些差别存在。需要用户自己发现。
-## 1. 标题
-- # 一级标题
-- ## 二级标题
-- ### 三级标题
+## 标题
+- \# [一级标题] 
+- \## [二级标题]
+- \### [三级标题]
 
 
-## 2. 粗体和斜体
+## 粗体和斜体
 - 斜体效果：*VSCODE*  
 - 加粗效果：**VSCODE**  
 - 斜体加粗效果：***VSCODE***  
@@ -19,8 +19,8 @@
 &emsp;&emsp;一语未了，只听后院中有人笑声，说：“我来迟了，不曾迎接远客！"  
 
 
-## 3. 引用
-### 3.1 文本引用
+## 引用
+### 文本引用
 > 我是引用  
 >> 我是嵌套引用  
 我是引用  
@@ -28,7 +28,7 @@
 > 我是引用
 
 
-### 3.2 代码引用
+### 代码引用
 #### 单行代码引用  
 Java中使用 `System.out.println("Hello World!")` 作为输出
 #### 多行代码引用
@@ -40,7 +40,7 @@ c = a +b
 print('The result of a + b = ' + str(c))
 ```
 
-## 4. 列表
+## 列表
 - VSCODE  
 Hello world
 - VSCODE
@@ -56,13 +56,13 @@ Hello world
 10. 注意这里是10，所以并没有考虑序号的正确性  
 1968\. 如果遇到开头是数字的话，可以用 \ 处理
 
-## 5. 表格
+## 表格
 | Tables        | Are           | Cool  |
 | ------------- |:-------------:| -----:|
 | col 3 is      | right-aligned | $1600 |
 | col 2 is      | centered      |   $12 |
 | zebra stripes | are neat      |    $1 |
-## 6. 分割线
+## 分割线
 ***
 这是分割线
 ***
@@ -74,7 +74,7 @@ Hello world
 - - - - - 
 这是分割线
 ----------------- - -
-## 7. 区段元素
+## 区段元素
 - 行内链接This is [an example](http://example.com/ "Title") inline link.  
 - See my [About](/about/) page for details. // 这里是相对路径  
 - This is [Google][link] reference-style link.  
@@ -82,13 +82,13 @@ Hello world
 - [Google][link]  
 - 自动链接<http://www.google.com/>
 
-## 8. 插入图片
+## 插入图片
 - 行内式：![GitHub](https://avatars2.githubusercontent.com/u/3265208?v=3&s=100 "GitHub,Social Coding")就是这样
 - 参考式：![GitHub][github]就是这样
-## 9. 链接标题与生成目录
-### 9.1 链接到标题
+## 链接标题与生成目录
+### 链接到标题
 可以直接使用 <u>\[内容](#标题地址)</u> 的形式, 例如链接到[3. 引用](#3-引用)， 注意括号里面\(#链接到的地方)不能有英文句号。因此无法链接到带有“.”的次级标题，如“3.1 文本应用”是无法链接到的。
-### 9.1 生成目录
+### 生成目录
 示例如下：  
 > * [1. 生成目录](#1)
 >     * [1.1 第二级1](#1.1)
