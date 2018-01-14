@@ -22,6 +22,7 @@
         - [数据类型的输入输出函数](#数据类型的输入输出函数)
         - [量算函数](#量算函数)
         - [几何操作函数](#几何操作函数)
+        - [PostGIS函数使用示例](#postgis函数使用示例)
     - [建立PostGIS索引](#建立postgis索引)
 - [参考资料](#参考资料)
 
@@ -129,7 +130,17 @@ PostGIS函数大致可以分为以下四类:
 如length3d函数是对length2d函数的扩展。
 #### 几何操作函数
 如addBBox(geometry)函数给所给的几何体加上一个边框。如simplify(geometry,tolerance)函数可以对折线和多边形利用Douglas-Peuker算法进行一些节点进行删除，从而使表现的图形更简单而清晰，在网络传输数据时具有更高的效率。
-
+#### PostGIS函数使用示例
+- integer ST_NPoints(geometry g1); 返回geometry中包含多少个point
+    ```sql
+    SELECT ST_NPoints(ST_GeomFromText('LINESTRING(77.29 29.07,77.42 29.26,77.27 29.31,77.29 29.07)'));
+    --result: 4
+    ```
+- geometry ST_PointN(geometry a_linestring, integer n); 返回linestring中的第n个point
+    ```sql
+    SELECT ST_AsText(ST_PointN(ST_GeomFromText('CIRCULARSTRING(1 2, 3 2, 1 2)'),2));
+    --result:POINT(3 2)
+    ```
 ### 建立PostGIS索引
 当数据库的记录增大的时候，如果没有建立索引的话，操作的效率就显著下降。POstGIS建议当记录数超过几千的时候就应该建立索引，而GIS数据库一般都是海量数据，所以对PostGIS而言，索引就非常重要。 
 

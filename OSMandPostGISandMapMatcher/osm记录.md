@@ -10,12 +10,22 @@
 
 ## 如何使用OSM?
 ### 获取地图数据
-多种方式
+获取地图数据主要分两种情况，获取大范围数据还是小范围数据。
+
+**小范围数据的获取**比较简单，基本`进入官网->点击导出->手动选择不同的区域->在地图选定导出范围->点击导出`就出来了。其实就是做了一个url请求，也可以根据在url中直接填写经纬度。
+
+![export osm data for small range](export_osm_smallrange.png)
+
+**大范围数据的获取** 有多种方式，主要参考上图中的篮框中的内容，这里不多记录，如果在地图中框选范围太大，导出失败，可以直接点击Overpass API的连接，就能够导出数据来了，数据格式可以定义为xml文件。另外，知乎上有个介绍写的很好，参考[获取OpenStreetMap（OSM）数据方法知多少？](https://zhuanlan.zhihu.com/p/25889246)，主要参考其中的第一种方法。
+
 ### 地图数据解释
 地图数据导入pg数据库，使用osm2pgsql（apt-get intall osm2pgsql）导入，命令类似于
 ```shell
 osm2pgsql -s -U postgres -d osm /tmp/map.xml -H 192.168.6.133 -W。
 ```
+
+命令行参数详解见[command-line usage](https://github.com/openstreetmap/osm2pgsql/blob/master/docs/usage.md)
+
 **注**：osm2pgsql导入数据有两种模式， normal and slim mode。
 - normal mode会在内存中产生如下三张中间表，并在导入结束后丢弃，因此速度较快。  
 planet_osm_nodes  
@@ -26,6 +36,44 @@ planet_osm_rels
 
 两者使用的区别在于是否加“-s”，加了表示slim mode，本文使用slim mode。
 使用slim mode导入数据后在数据库中会产生如下表。
-        
+
+***补充数据图or表***
+#### 三张临时表：planet_osm_nodes, planet_osm_ways, planet_osm_rels
+需要注意的是nodes表中的lat和lon是bigint类型的数据，它们并不是经纬度的多少倍或是什么样子，而是一种表示方式（你可以认为是一种编码方式）。从bigint类型转换到经纬度编码的过程，在进行osm2pgsql的时候其实已经做了，只不过数据改存到了point表里面的way值中，这是一种geometry数据类型，更方便使用。这也是这张临时表没什么用的原因。
+
+#### planet_osm_point
+将原始geometry数据展示成4326（也就是wgs84标准）格式的经纬度的代码类似于：
+```sql
+select ST_AsText(ST_Transform(way, 4326)) from planet_osm_point where osm_id = 1422005356
+```
+
+## 基于OSM的开源导航服务
+基于OSM的开源导航服务有OSRM和GraphHopper。这里重点记录OSRM，项目放在了github上，叫做[Open Source Routing Machine](https://github.com/Project-OSRM/osrm-backend)。官网地址：http://project-osrm.org/，API文档说明地址：http://project-osrm.org/docs/v5.10.0/api/#general-options
+### OSRM安装
+参考github项目的[README](https://github.com/Project-OSRM/osrm-backend)和[OSRM笔记](https://my.oschina.net/u/1266171/blog/918232)
+
+### 导航API重要参数记录
+- RouteLeg对象中的annotations属性
+
+    distance和duration单位分别为米和秒，speed单位米/秒，由distance/duration计算得到。nodes就是osm_node表中的id（也是osm_line表中的osm_id）
+```json
+{
+  "distance": 30.0,
+  "duration": 100.0,
+  "weight": 100.0,
+  "steps": [],
+  "annotation": {
+    "distance": [5,5,10,5,5],
+    "duration": [15,15,40,15,15],
+    "datasources": [1,0,0,0,1],
+    "nodes": [49772551,49772552,49786799,49786800,49786801,49786802],
+    "speed": [0.3, 0.3, 0.3, 0.3, 0.3]
+  }
+}
+```
+       
 ## 参考资料
-[OSM入门+搭建地图服务](http://www.cnblogs.com/LBSer/p/4451471.html) //讲的很详细，值得参考一看
+1. [OSM入门+搭建地图服务](http://www.cnblogs.com/LBSer/p/4451471.html), 讲的很详细，值得参考一看
+2. [How do I convert the coordinate data from osm into actual longitude latitude points](https://gis.stackexchange.com/questions/163173/how-do-i-convert-the-coordinate-data-from-osm-into-actual-longitude-latitude-poi)
+3. [What format is lat/long stored in OSM PostGIS?](https://gis.stackexchange.com/questions/57003/what-format-is-lat-long-stored-in-osm-postgis)
+4. [OpenStreetMap、googleMap等经纬度和行列号之间相互转化](http://www.cnblogs.com/Micang/p/6346446.html)
