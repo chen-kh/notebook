@@ -72,3 +72,48 @@ def test():
 if __name__ == '__main__':
     test()
 ```
+
+### 回到最初的问题，交换两个数组的元素，使得数组和的差值最小
+从最初的角度思考问题，交换两个数组的元素。这种方法也达到目标。
+- 算法过程：从数组A的第一个元素开始，在数组B中寻找最优的下标i，即`argmin(sum(A) - A[1] + B[i] - sum(B) + B[i] - A[1]) = argmin(sum(A) - sum(B) - 2 * (A[1] - B[i]))`。然后交换A[1]与B[i]。之后对A[2]进行同样的操作。知道将数组A遍历完毕，会得到一个比原来和的差值小很多新的A和B。以上过程为一次迭代，直到和的差值为0或者上一次迭代与本次迭代没有变化，循环完毕。
+- 算法证明：明显可以看出，只要数组A和B中存在调优的空间（交换数值可以使和的差值更小），每次迭代总会有数值交换，因此总能到达最优的情况。
+- 问题思考：值得考虑的是，这种算法的时间复杂度有多少，因为迭代多少次似乎是未知的，最坏的情况时每次迭代优化一个单位，这样至少需要迭代abs(sum(A) - sum(B))次，时间复杂度最坏的情况是abs(sum(A) - sum(B)) * m * n
+- 算法代码示例
+```python
+def exchange2min_sumdiff(arr1, arr2):
+    n, m = len(arr1), len(arr2)
+    last_absdiff = abs(sum(arr2) - sum(arr1))
+    if last_absdiff == 0:
+        return
+    best = 0
+    while(not best):
+        best_absdiff = last_absdiff
+        for i, a in enumerate(arr1):
+            best_index = 0
+            for j, b in enumerate(arr2):
+                newabsdiff = abs(sum(A) - sum(B) - 2 * (a - b))
+                if newabsdiff < best_absdiff:
+                    best_absdiff = newabsdiff
+                    best_index = j
+                    if best_absdiff == 0:
+                        arr1[i], arr2[best_index] = arr2[best_index], arr1[i]
+                        return
+            if best_absdiff < last_absdiff:
+                print('exchange A[{0}]='.format(i) + str(arr1[i]) + ' and B[{0}]='.format(best_index) + str(arr2[best_index]) + ", " + str(best_absdiff))
+                arr1[i], arr2[best_index] = arr2[best_index], arr1[i]
+
+        if best_absdiff == last_absdiff:
+            best = 1
+            break
+        if best_absdiff < last_absdiff:
+            last_absdiff = best_absdiff
+
+
+if __name__ == '__main__':
+    A = [1,2,3,4,5]
+    B = [5,6,7,8,9]
+    exchange2min_sumdiff(A,B)
+    print(A)
+    print(B)
+    print(abs(sum(A) - sum(B)))
+```
