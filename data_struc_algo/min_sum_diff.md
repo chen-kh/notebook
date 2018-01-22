@@ -29,32 +29,33 @@ def min_sumdiff_subsets(intset):
 
 ### 在上面的基础上，限定一个集合的大小为 m，其中 m<n 
 - 解题思路：仍然认为是0-1背包问题，与上面一种情况不同的是，这里限定了选择东西的数量。只需要在计算动态规划问题的时候考虑选择东西数量的问题就好了。其实这里思考起来并不难，但是很多边界条件需要考虑进去，也就说如何保证选择确定的m个数值，既不多也不少。
-- 状态方程：![状态方程](dp_sum_diff_min.png)
+- 状态方程：
+![状态方程](dp_sum_diff_min.png)  
 其中w[i]和p[i]分别表示重量数组和价值数组，本题中相等。f(i,j,k)表示从第1到第i个元素中取k个，放在重量为j的包里的最大价值（重量）问题。边界条件主要有3点需要注意：1.当i <= k时，需要将前i-i个元素都取出来；2.当j <= 0而k != 0时，直接舍弃这种情况; 3. 如果重量不得已必须超过j时，开始选小的那一个。一个简单版的递归代码如下，仅仅表示思想，代码很乱，很没有技术含量。。。
 ```python
 def knapsack(wlist, i, j, k):
     if i<0 or j<0 or k<=0:
         return 0
     if i+1 == k:
-        return sum(wlist[:i+1])
-    if j<=0 and k != 0:
+        return sum(wlist[:i+1]) # the sum maybe larger than j
+    if j<=0 and k != 0: # it tells us that there is no solution
         return None 
     if wlist[i] > j:
         return knapsack(wlist, i-1, j, k)
     else:
         a = knapsack(wlist, i-1, j, k)
         bt = knapsack(wlist, i-1, j-wlist[i], k-1)
-        if bt is None:
+        if bt is None: # 
             b = 0
         else:
             b = bt + wlist[i]
         if a is None:
             a = 0
-        if a >= b and a <= j:
+        if a >= b and a <= j: 
             return a
         if a < b and b <= j:
             return b
-        if a > j or b > j:
+        if a > j or b > j: # in case of one of sum larger than j, the best result smaller than j does not exist, then we trying to find the result which is closest to j (althought it's larger than j)
             return min(a,b)
 
 def test():
