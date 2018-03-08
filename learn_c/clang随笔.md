@@ -86,3 +86,16 @@ int main(){
 	return 0;
 }
 ```
+## C C++ 命名规范
+请参考[C++命名规范](https://www.jianshu.com/p/028a1b22ecfa)与[Google C++命名约定](http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/naming/)
+
+## 指针加法
+指针是有类型的，本质上标示的是一个整型（ssize_t)地址，可以进行加减法运算。但是跟普通整型加减法不同的是：指针的加减单位是相应指针类型在内存中的占用空间大小。例如：
+```c
+int *a = 0;
+long *b = 0;
+char *c = 0;
+printf("%ld\n", a + 1);//output = 4
+printf("%ld\n", b + 1);//output = 8
+printf("%ld\n", c + 1);//output = 1
+```
