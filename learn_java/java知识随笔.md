@@ -6,6 +6,7 @@
 - 最基本的方法：调用`thread.join()`
 - 不太基本的方法：设置`CountDownLatch`成员
 - 等待线程池所有线程执行完成的方法：`boolean awaitTermination(long timeout, TimeUnit unit)`
+
 ***代码1：join()方法调用***
 ```java
 public class JoinTest {
