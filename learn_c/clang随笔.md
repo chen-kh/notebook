@@ -99,3 +99,27 @@ printf("%ld\n", a + 1);//output = 4
 printf("%ld\n", b + 1);//output = 8
 printf("%ld\n", c + 1);//output = 1
 ```
+
+## `char str[]` 和 `char *str` 的区别（涉及到字符串常量的特点）
+```c
+// wrong function 
+char* get_str(void){
+    char str[] = {"abcd"};
+    return str;
+}
+
+// right function 
+char* get_str(void){
+    char *str = {"abcd"};
+    return str;
+}
+
+const char str[] ="abcd";       //abcd存储在堆栈中
+const char *str ="abcd";        //abcd存储在静态存储区
+
+// 数组和指针是不同的数据类型，有本质的区别：
+char str[] ="abcd";        //sizeof(str) == 5 * sizeof(char)
+char *str ="abcd";       //sizeof(str) == 4(x86) or 8(x64)
+```
+- `char str[] ={"abcd"};`定义了一个局部字符数组（放在堆栈中，函数调用完即销毁此段内存），尽管是数组，但它是一个局部变量，返回它的地址肯定是一个已经释放了的空间的地址。此函数返回的是内部一个局部字符数组str的地址，且函数调用完毕后此数组被销毁，所以你返回的指针也就指向一块被销毁的内存，这种写法是错误的。
+- 此函数返回的是**字符串常量的地址**，而像这种字符串都是属于全局的，**在编译的时候就已经分配了内存了，只有程序退出的时候才会被销毁**，所以返回它的地址是没有问题的，但是你最好返回常量指针，因为你不能去改变字符串常量的值。
