@@ -23,7 +23,9 @@
     - [继承Thread和实现Runnable的区别是什么](#继承thread和实现runnable的区别是什么)
     - [Difference between notify and notifyAll in Java](#difference-between-notify-and-notifyall-in-java)
     - [线程池](#线程池)
-    - [可重入锁](#可重入锁)
+    - [锁](#锁)
+        - [可重入锁-`ReentrantLock`](#可重入锁-reentrantlock)
+        - [读写锁-`ReadWriteLock`](#读写锁-readwritelock)
 - [Java虚拟机](#java虚拟机)
     - [Java内存区域](#java内存区域)
         - [程序计数器](#程序计数器)
@@ -101,7 +103,13 @@ public Set<K> keySet() {
 > - 为什么HashTable已经淘汰了，还要优化它？因为有老的代码还在使用它，所以优化了它之后，这些老的代码也能获得性能提升
 #### LinkedHashSet，LinkedHashMap, ConcurrentHashMap
 ##### ConcurrentHashMap：其实属于java.util.concurrent包
-参考：[ConcurrentHashMap 的实现原理](http://wiki.jikexueyuan.com/project/java-collection/concurrenthashmap.html)、[探索 ConcurrentHashMap 高并发性的实现机制](https://www.ibm.com/developerworks/cn/java/java-lo-concurrenthashmap/index.html)
+参考：
+
+- [漫画：什么是ConcurrentHashMap？](https://mp.weixin.qq.com/s?__biz=MzIxMjE5MTE1Nw==&mid=2653192083&idx=1&sn=5c4becd5724dd72ad489b9ed466329f5&chksm=8c990d49bbee845f69345e4121888ec967df27988bc66afd984a25331d2f6464a61dc0335a54&scene=21#wechat_redirect)
+- [ConcurrentHashMap 的实现原理](http://wiki.jikexueyuan.com/project/java-collection/concurrenthashmap.html)
+- [探索 ConcurrentHashMap 高并发性的实现机制](https://www.ibm.com/developerworks/cn/java/java-lo-concurrenthashmap/index.html)、
+- [ConcurrentHashMap总结](http://www.importnew.com/22007.html)：最重要！！！jdk6、7和8的实现有很大差别！！！
+- [Java进阶（六）从ConcurrentHashMap的演进看Java多线程核心技术](http://www.jasongj.com/java/concurrenthashmap/)：主讲java8，图画的很好
 
 ![concurrenthashmap segment](http://wiki.jikexueyuan.com/project/java-collection/images/concurrenthashmap3.jpg)
 
@@ -205,6 +213,12 @@ Collections.addAll(flavors, "Peaches 'n Plutonium", "Rocky Racoon");
 ## 多线程与并发
 参考：[Java并发编程：Callable、Future和FutureTask](http://www.cnblogs.com/dolphin0520/p/3949310.html)
 ### volatile变量的理解
+
+参考[Java中volatile变量的理解与正确使用](https://mp.weixin.qq.com/s?subscene=23&__biz=MjM5NzM0MjcyMQ==&mid=2650072057&idx=3&sn=0eb6dd4be610de53293d124c4e0498b3&chksm=bedb389789acb181347f0867d234b5ef500afff2d986248cf53ea1e4b866afd1ace51da7faba&scene=7#rd)，[漫画：什么是 volatile 关键字？](https://mp.weixin.qq.com/s?subscene=23&__biz=MzIxMjE5MTE1Nw==&mid=2653192450&idx=2&sn=ad95717051c0c4af83923b736a5bc637&chksm=8c99f3d8bbee7aceb123e4f6aa9a220630b5aa17743ba812d82308bfb6a8ed8303bdd181f144&scene=7#rd)
+
+> - volatile标示的变量保证了可见性，也就是线程用到该变量时必须从内存读取新值，在更改该变量时必须将指刷新到主内存中。  
+> - volatile变量适用于那些一写多读的应用场景，而多写的场景并不能保证线程安全
+
 Java语言提供了一种稍弱的同步机制，即volatile变量。作用与说明有三：
 - 用来确保将变量的更新操作通知到其它线程，保证了新值能够立即同步到主内存，以及每次使用前立即从主内存刷新。
 - volatile的另一个语义是禁止指令重排序优化。
@@ -373,8 +387,18 @@ public class RunnableFutureTask {
 >Java provides two methods notify and notifyAll for waking up threads waiting on some condition and you can use any of them but there is a subtle difference between notify and notifyAll in Java which makes it one of the popular multi-threading interview questions in Java. <u>When you call notify only **one of waiting** for the thread will be woken and it's not guaranteed which thread will be woken, it depends on upon Thread scheduler. While if you call notifyAll method, **all threads waiting** on that lock will be woken up, but again all woken thread will fight for lock before executing remaining code</u> and that's why **wait is called on loop** because if multiple threads are woken up, the thread which will get lock will first execute and it may reset waiting for condition, which will force subsequent threads to wait. So key difference between notify and notifyAll is that notify() will cause only one thread to wake up while notifyAll method will make all thread to wake up.
 
 ### 线程池
-### 可重入锁
+
+### 锁
+参考
+- [Java中的锁分类](http://www.cnblogs.com/qifengshi/p/6831055.html)
+- [Java可重入锁详解](https://www.jianshu.com/p/f47250702ee7)
+- [Java同步框架AbstractQueuedSynchronizer](https://www.jianshu.com/p/853b203a8d93)
+#### 可重入锁-`ReentrantLock`
 如果当前线程已经获得了某个监视器对象所持有的锁，那么该线程在该方法中调用另外一个同步方法也同样持有该锁。如果锁不具有可重入性特点的话，那么线程在调用同步方法、含有锁的方法时就会产生死锁。
+#### 读写锁-`ReadWriteLock`
+其读锁是共享锁，其写锁是独享锁。
+读锁的共享锁可保证并发读是非常高效的，读写，写读 ，写写的过程是互斥的。
+
 ## Java虚拟机
 ### Java内存区域
 参考：[Java运行时数据区域](https://www.jianshu.com/p/6173a467165e)

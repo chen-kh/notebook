@@ -339,7 +339,6 @@ int partition(int* arr, int len, int start, int end){
 		exit(1);
 	}
 	int pivot = arr[end];
-	int end2 = end;
 	start--;
 	while(start < end){
 		while(start < end && arr[++start] <= pivot);
