@@ -1,10 +1,8 @@
-<link rel="stylesheet" type="text/css" href="learn_markdown/auto-number-title.css" />
-
---------------------------------
-    Github教程与简单笔记
-    @author 陈凯恒
-    @createtime 2018-01-03V
---------------------------------
+---
+title: Github教程与简单笔记
+categories: Github
+tags: Github
+---
 # Github教程与简单笔记
 <!-- TOC -->
 

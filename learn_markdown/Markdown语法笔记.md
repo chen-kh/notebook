@@ -1,3 +1,8 @@
+---
+title: markdown语法笔记  
+categories: [Markdown]
+tags: [Markdown]
+---
 # markdown语法笔记  
 **注**：Markdown 并没有一个整体规范的写法，markdown只是提供了一些基本的规则，复杂的功能需要开发者自己实现。markdown有很多种，比如github使用github favorable markdown，基本语法大致相同，但是有些差别存在。需要用户自己发现。
 <!-- TOC -->

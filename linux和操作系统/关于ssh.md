@@ -1,3 +1,8 @@
+---
+title: 关于ssh的知识
+categories: [ssh]
+tags: [ssh]
+---
 # 关于ssh的知识
 
 ## 配置ssh免秘钥登录

@@ -1,3 +1,8 @@
+---
+title: B树与B+树
+categories: 数据结构与算法 #文章分类
+tags: [数据结构与算法, 树]      #文章标签，可以一次添加多个标签
+---
 # B树与B+树
 
 参考：[漫画：什么是B+树](https://mp.weixin.qq.com/s?__biz=MzI1MTIzMzI2MA==&mid=2650561220&idx=1&sn=2a6d8a0290f967027b1d54456f586405&chksm=f1feec47c689655113fa65f7911a1f59bbd994030ad685152b30e53d643049f969eefaa13058&scene=21#wechat_redirect)

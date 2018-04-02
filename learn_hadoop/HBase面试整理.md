@@ -1,3 +1,8 @@
+---
+title: HBase面试整理
+categories: [分布式系统, HBase]
+tags: [分布式系统, HBase, 面试]
+---
 # HBase面试整理
 
 ## 参考资料

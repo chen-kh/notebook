@@ -1,3 +1,8 @@
+---
+title: 解析：C语言中的c文件和h文件
+categories: C语言
+tags: [C语言]
+---
 # 解析：C语言中的c文件和h文件
 
 参考资料

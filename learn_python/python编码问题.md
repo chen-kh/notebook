@@ -1,3 +1,8 @@
+---
+title: Python 编码问题
+categories: [Python]
+tags: [Python]
+---
 # Python 编码问题
 **Python encode and decode just like shit !!!!!!!!!!**
 

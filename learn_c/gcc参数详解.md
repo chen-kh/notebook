@@ -1,3 +1,8 @@
+---
+title: GCC参数详解
+categories: C语言
+tags: [C语言, GCC编译]
+---
 参见博客：[GCC参数详解](http://www.cppblog.com/SEMAN/archive/2005/11/30/1440.html)
 
 [介绍] 

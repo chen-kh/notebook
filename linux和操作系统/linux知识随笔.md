@@ -1,3 +1,8 @@
+---
+title:  LINUX 知识随笔
+categories: [linux系统, 随笔]
+tags: [linux系统, 随笔]
+---
 # LINUX 知识随笔
 
 ## 如何在两台linux主机间同步目录或文件？

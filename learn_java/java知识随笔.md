@@ -1,3 +1,8 @@
+---
+title: Java 知识随笔
+categories: [Java知识，随笔]
+tags: [Java, JVM, 随笔]
+---
 # Java 知识随笔
 <!-- TOC -->
 

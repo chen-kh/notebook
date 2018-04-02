@@ -1,3 +1,8 @@
+---
+title: C language 随笔
+categories: C语言
+tags: [随笔, C语言]
+---
 # C language 随笔
 
 ## 结构体指针需要先初始化（分配内存空间）再进行赋值

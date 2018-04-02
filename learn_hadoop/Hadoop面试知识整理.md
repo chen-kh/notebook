@@ -1,3 +1,8 @@
+---
+title: Hadoop面试内容整理
+categories: [分布式系统, Hadooop]
+tags: [分布式系统, Hadoop, 面试]
+---
 # Hadoop面试内容整理
 
 Hadoop的面试内容主要分为3各部分，首先接触过Hadoop的一定会问MapReduce编程模型的详细过程，然后可以问一些文件系统的东西，最后可能问一下与Hadoop相关的衍生品：HBase等。

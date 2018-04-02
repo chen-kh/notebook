@@ -1,3 +1,8 @@
+---
+title: 关于Linux core文件
+categories: [linux系统]
+tags: [linux系统]
+---
 # 关于Linux core文件
 
 ## core文件的简单介绍

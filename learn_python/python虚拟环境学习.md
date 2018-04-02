@@ -1,9 +1,8 @@
-- - - 
-    python 虚拟环境学习与使用
-    @author 陈凯恒
-    @createtime 2018-01-01
-- - -
-
+---
+title: Python 虚拟环境学习与使用
+categories: [Python]
+tags: [Python, 虚拟环境]
+---
 # Python 虚拟环境学习与使用
 
 <!-- TOC -->

@@ -1,3 +1,8 @@
+---
+title: 宏define的用法
+categories: C语言
+tags: [C语言]
+---
 # 宏define的用法
 
 define的介绍信息、总结信息

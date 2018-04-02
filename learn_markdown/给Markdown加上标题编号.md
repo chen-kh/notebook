@@ -1,20 +1,20 @@
----------------------------------------
-    如何给Markdown文件自动加上标题编号
-    @author chenkh
-    @createtime 2018-01-02
----------------------------------------
+---
+title: 如何给Markdown文件自动加上标题编号
+categories: [Markdown]
+tags: [Markdown]
+---
 # 如何给Markdown文件自动加上标题编号
 **转自参考资料[1]**  
 <!-- TOC -->
 
-- [问题描述](#问题描述)
+- [问题描述"markdown.showPreviewToSide](#问题描述markdownshowpreviewtoside)
 - [解决方法](#解决方法)
 - [进一步优化](#进一步优化)
 - [补充说明](#补充说明)
 - [参考资料](#参考资料)
 
 <!-- /TOC -->
-## 问题描述
+## 问题描述"markdown.showPreviewToSide
 
 我们都知道，MarkDown可以通过######等标记添加不同层次的标题，非常方便。但是问题来了：如何给标题加上编号呢？
 

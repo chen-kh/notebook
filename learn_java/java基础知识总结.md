@@ -1,17 +1,31 @@
+---
+title: Java基础知识总结
+categories: [Java知识]
+tags: [Java, JVM]
+---
 # Java基础知识总结
 
 <!-- TOC -->
 
-- [面向对象](#面向对象)
-    - [三大特征与五大基本原则](#三大特征与五大基本原则)
-- [参考资料](#参考资料)
+- [1. 面向对象](#1-面向对象)
+    - [1.1. 三大特征与五大基本原则](#11-三大特征与五大基本原则)
+- [2. Java与操作系统](#2-java与操作系统)
+    - [2.1. 进程与线程](#21-进程与线程)
+    - [2.2. 什么是线程安全](#22-什么是线程安全)
+    - [2.3. `wait/notify/notifyAll`的解释](#23-waitnotifynotifyall的解释)
+    - [2.4. 阻塞与非阻塞、同步与异步](#24-阻塞与非阻塞同步与异步)
+- [3. Java Virtual Machine](#3-java-virtual-machine)
+    - [3.1. Java的垃圾回收机制](#31-java的垃圾回收机制)
+        - [3.1.1. 可达性分析算法](#311-可达性分析算法)
+        - [3.1.2. 垃圾回收什么情况下被触发](#312-垃圾回收什么情况下被触发)
+- [4. 参考资料](#4-参考资料)
 
 <!-- /TOC -->
 
 这里先总结一些零碎的笔记记录，是希望能有一个自己的Java笔记，以便于之后查询。这个文件应该会经常添加内容，然后当内容丰富到一定程度之后进行全面的整理。
-## 面向对象
+## 1. 面向对象
 Java是面向对象吧编程语言的一个典范，也是应用最多的语言之一。这个部分总结一些面向对象的东西。
-### 三大特征与五大基本原则
+### 1.1. 三大特征与五大基本原则
 - 封装(Encapsulation)
 
     所谓封装，也就是把客观事物封装成抽象的类，并且类可以把自己的数据和方法只让可信的类或者对象操作，对不可信的进行信息隐藏。封装是面向对象的特征之一，是**对象和类**概念的主要特性。简单的说，一个类就是一个封装了数据以及操作这些数据的代码的逻辑实体。在一个对象内部，某些代码或某些数据可以是私有的，不能被外界访问。通过这种方式，对象对内部数据提供了不同级别的保护，以防止程序中无关的部分意外的改变或错误的使用了对象的私有部分.
@@ -53,6 +67,135 @@ Java是面向对象吧编程语言的一个典范，也是应用最多的语言�
     使用多个专门的接口比使用单个接口要好的多！
 
     这个我有体会，在我实际编程中，为了减少接口的定义，将许多类似的方法都放在一个接口中，最后发现，维护和实现接口的时候花了太多精力，而接口所定义的操作相当于对客户端的一种承诺，这种承诺当然是越少越好，越精练越好，过多的承诺带来的就是你的大量精力和时间去维护！
+## 2. Java与操作系统
 
-## 参考资料
+### 2.1. 进程与线程
+进程是执行着的应用程序，而线程是进程内部的一个执行序列。一个进程可以有多个线程。线程又叫做轻量级进程。
+
+线程的划分小于进程，线程隶属于某个进程。 进程是程序的一种动态形式，是CPU、内存等资源占用的基本单位，而线程是不能占有这些资源的。 进程之间相互独立，通信比较困难，而线程之间共享一块内存区域，通信比较方便。 进程在执行的过程中，包含比较固定的入口，执行顺序，出口，而线程的这些过程会被应用程序所控制
+
+### 2.2. 什么是线程安全
+当多个线程访问同一个对象时，如果不用考虑这些线程在运行时环境下的调度和交替运行，也不需要进行额外的同步，或者在调用方进行任何其他的协调操作，调用这个对象的行为都可以获取正确的结果，那这个对象是线程安全的。
+### 2.3. `wait/notify/notifyAll`的解释
+其实大部分人都能说出来他们的含义，但是其实大多数人也并不真正清楚他们的作用。请看下面的代码：
+
+### 2.4. 阻塞与非阻塞、同步与异步
+参考：[深入理解同步/异步与阻塞/非阻塞区别](https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&mid=403270751&idx=1&sn=7269cd113d7b85e407319036d61ef786&mpshare=1&scene=24&srcid=0324aakwIYUbrJ9ka1iUqxKg#rd)
+
+文章中间讲的很好，图解释的也很好。同步和异步的区别是全程是不是你一个人做的，阻塞和非阻塞的区别是排队的过程中你有没有去做别的事情。
+
+异步一般是函数调用之后不管功能或者工作完成了没有，都会立刻接收到返回值，但可以通过回调函数告知该任务是否完成。同步当然就是一直等待结果了。
+
+阻塞的意思是在等待可以开始工作的时间内一直等着，什么都不干就是阻塞，但是如果等待期间做别的事情去了，每隔一段时间回来查看一下就属于非阻塞了。
+分析结果：
+- 三个操作在进行时必须已经先获得了对象的锁。所以这些函数**必须在同步代码块中使用**。
+- `wait`方法其实是把线程放进了`等待池`
+- `notify`方法其实是把`等待池`中的某一个线程放入了`锁池`
+- `notifyAll`方法其实是把`等待池`中的所有线程放入了`锁池`
+- `锁池`中的线程竞争锁，得到`锁`的线程（同时只能有一个）运行，并在同步代码块运行完成之后`释放锁`
+- 只有处于`锁池`中的线程才能竞争锁
+- `等待池`中的线程在没有被`notify/notifyAll`方法唤醒的情况下，不会进入`锁池`
+- `锁池`中的线程在没有调用`wait`方法情况下，不会进入`等待池`
+
+只要按照上面的结果就能知道下面的代码如果主线程使用`notify`而不是`notifyAll`的话，五个线程中只有一个能完成，其余会一直等下去。因为被唤醒的那一个线程运行完之后已经释放了锁，而另外四个线程却一直处于`等待池`，连竞争锁的资格都没有。[这里](http://wiki.jikexueyuan.com/project/java-concurrency/collaboration-between-threads.html)讲的还挺清楚的。好看的代码就是下面这个了。
+```java
+import java.util.concurrent.TimeUnit;
+
+public class Test3 {
+	public static void main(String[] args) {
+		Object co = new Object();
+		System.out.println(co);
+
+		for (int i = 0; i < 5; i++) {
+			MyThread t = new MyThread("Thread" + i, co);
+			t.start();
+		}
+
+		try {
+			TimeUnit.SECONDS.sleep(20);
+			synchronized (co) {
+				System.out.println("Main Thread entered syn block...begin to invoke notifyAll()");
+				co.notifyAll();
+				System.out.println("Main Thread return from notifyAll()...begin to sleep");
+				TimeUnit.SECONDS.sleep(2);
+				System.out.println("Main Thread quit from syn block.");
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	static class MyThread extends Thread {
+		private String name;
+		private Object co;
+
+		public MyThread(String name, Object o) {
+			this.name = name;
+			this.co = o;
+		}
+
+		@Override
+		public void run() {
+			try {
+				System.out.println(name + " trying to enter syn block.");
+				synchronized (co) {
+					System.out.println(name + " entered the syn block.Now sleep 2s...");
+					TimeUnit.SECONDS.sleep(2);
+					System.out.println(name + " returm from sleep, begin to invoke wait()...");
+					co.wait();
+					System.out.println(name + " returm from wait()");
+					int nLoopTime = 3;
+					while (nLoopTime != 0) {
+						System.out.println(name + " is in loop for " + nLoopTime + " time");
+						TimeUnit.SECONDS.sleep(1);
+						nLoopTime--;
+					}
+//					co.notify();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+```
+## 3. Java Virtual Machine
+### 3.1. Java的垃圾回收机制
+
+参考：[理解Java垃圾回收机制](http://jayfeng.com/2016/03/11/%E7%90%86%E8%A7%A3Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/)、
+
+总结性来说：
+- Java的垃圾回收机制是一个复杂的过程。
+- 判断对象已死的基本算法是**引用计数算法**，这种算法在python等语言中得到应用，但是在Java由于需要避免循环引用造成的内存泄漏问题，采用的是**可达性分析算法**，引用之间的依赖关系形成一棵树，当从根节点遍历找不到这个节点的时候说明这个节点死掉了。
+- 在进行垃圾回收的过程中，对象的生命周期一般分为3个部分：**新生代、老年代和持久代**，对象在不同代之间的转移根据一定的算法实现。不同代的内存大小也有讲究，可以在性能调优过程中进行配置。
+- 不同代使用不同的垃圾收集算法，新生代中大部分对象存活周期不超过1次gc，因此一般使用**复制算法**，而老年代对象声明周期较长，一般使用**标记-整理/清除算法**。
+- Java虚拟在在实现这些算法的时候又有一系列算法来尽量做到高效和安全。
+
+#### 3.1.1. 可达性分析算法
+在Java语言里，可作为GC Roots对象的包括如下几种：
+- 虚拟机栈(栈桢中的本地变量表)中的引用的对象
+- 方法区中的类静态属性引用的对象
+- 方法区中的常量引用的对象
+- 本地方法栈中JNI的引用的对象 
+
+可达性分析的主要问题是这棵树是如何建立的，网上被没有找到过于这方面的内容。文章-[java垃圾回收机制--可达性算法](https://blog.csdn.net/lamp_zy/article/details/53212909)-中提到了这个过程，但是图片不见了。
+
+对于那些“食之无味，弃之可惜”的引用的处理方法：
+- 强引用
+- 软引用
+- 弱引用
+- 虚引用
+
+#### 3.1.2. 垃圾回收什么情况下被触发
+java的垃圾回收也分不同程度的回收，并不是每次回收都是大范围搞一次，而是分层次分情况的。
+- 当Eden区满时，触发Minor GC。
+- Full GC触发条件：
+    - 调用System.gc时，系统建议执行Full GC，但是不必然执行
+    - 老年代空间不足
+    - 方法去空间不足
+    - 通过Minor GC后进入老年代的平均大小大于老年代的可用内存
+    - 由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小
+
+## 4. 参考资料
 1. [Java基础：面向对象三大特征、五大原则](http://www.bkjia.com/ASPjc/1019908.html)

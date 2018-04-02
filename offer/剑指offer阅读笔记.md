@@ -1,3 +1,8 @@
+---
+title: 剑指offer阅读笔记
+categories: [面试, 剑指offer]
+tags: [面试, 剑指offer]
+---
 # 剑指offer阅读笔记
 <!-- TOC -->
 
@@ -63,7 +68,6 @@
     - [2.58. 二叉搜索树的第k个节点（第k大的节点）](#258-二叉搜索树的第k个节点第k大的节点)
     - [2.59. 数据流的中位数](#259-数据流的中位数)
     - [2.60. 滑动窗口的最大值](#260-滑动窗口的最大值)
-- [3. 请回顾](#3-请回顾)
 
 <!-- /TOC -->
 ## 1. 面试需要注意的内容
@@ -290,63 +294,3 @@ public int count(int n){
 
 ### 2.60. 滑动窗口的最大值
 为了保证是O(n)复杂度，滑动窗口是用双向队列表示，里面只存储是最大值或者可能是下一个最大值的值。
-
-
-## 3. 请回顾
-1. 什么是归并排序？（题36：找所有的逆序对）  
-归并排序就是将数组分成两个部分，然后分别对两个部分进行排序，然后再融合起来。可以递归实现，算法时间复杂度时O(nlogn)，空间复杂度O(n)，也就是需要辅助空间。
-
-2. 学习容易记住的快排算法过程（Partition函数式最重要的，有两种写法，一种高效，另一种普通，参考[这里](http://selfboot.cn/2016/09/01/lost_partition/)）
-```c
-// main sort function
-void qsort(int* arr, int len, int start, int end){
-	if(start == end)
-		return;
-	int index = partition(arr, len, start, end);
-	print_arr(arr, len);
-	if(index > start)
-		qsort(arr, len, start, index - 1);
-	if(index < end)
-		qsort(arr, len, index + 1, end);
-}
-// partition function 1
-int partition(int* arr, int len, int start, int end){
-	if(arr == NULL || start < 0 || end < 0 || end >= len || end < start){
-		printf("partition input invalid\n");
-		exit(1);
-	}
-	int pivot = arr[end];
-
-	int small = start - 1;
-	int i;
-	for(i = start; i < end; i++){
-		if(arr[i] < pivot){
-			small++;
-			if(i != small)
-				swap(&arr[small], &arr[i]);
-		}
-	}
-
-	small++;
-	swap(&arr[small], &arr[end]);
-	
-	return small;
-}
-// partition function which is more efficient
-int partition(int* arr, int len, int start, int end){
-	if(arr == NULL || start < 0 || end < 0 || end >= len || end < start){
-		printf("partition input invalid\n");
-		exit(1);
-	}
-	int pivot = arr[end];
-	start--;
-	while(start < end){
-		while(start < end && arr[++start] <= pivot);
-		arr[end] = arr[start];
-		while(start < end && arr[--end] >= pivot);
-		arr[start] = arr[end];
-	}
-	arr[start] = pivot;
-	return start;
-}
-```
