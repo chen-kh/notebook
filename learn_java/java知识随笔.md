@@ -16,15 +16,17 @@ tags: [Java, JVM, 随笔]
     - [3.1. 浅拷贝与深拷贝](#31-浅拷贝与深拷贝)
     - [3.2. `Cloneable`接口](#32-cloneable接口)
     - [3.3. `Serializable`接口](#33-serializable接口)
-- [Java中的`final`关键字](#java中的final关键字)
-    - [`final`关键字的含义](#final关键字的含义)
-    - [`final`变量/引用](#final变量引用)
-    - [`final`方法](#final方法)
-    - [`final`类](#final类)
-    - [`final`关键字的好处](#final关键字的好处)
-- [Java中的`transient`关键字](#java中的transient关键字)
-- [Java中的`ListIterator`](#java中的listiterator)
-- [Java中的`HashMap`](#java中的hashmap)
+- [4. Java中的`final`关键字](#4-java中的final关键字)
+    - [4.1. `final`关键字的含义](#41-final关键字的含义)
+    - [4.2. `final`变量/引用](#42-final变量引用)
+    - [4.3. `final`方法](#43-final方法)
+    - [4.4. `final`类](#44-final类)
+    - [4.5. `final`关键字的好处](#45-final关键字的好处)
+- [5. Java中的`transient`关键字](#5-java中的transient关键字)
+- [6. Java中的`ListIterator`](#6-java中的listiterator)
+- [7. Java中的`HashMap`](#7-java中的hashmap)
+- [Java中的值传递与引用传递](#java中的值传递与引用传递)
+- [`List<List<Integer>>`的使用问题](#listlistinteger的使用问题)
 
 <!-- /TOC -->
   
@@ -273,16 +275,16 @@ public interface NavigableMap<K,V> extends SortedMap<K,V>
 
 如果你想知道一个 Java 标准类是否是可序列化的，请查看该类的文档。检验一个类的实例是否能序列化十分简单， 只需要查看该类有没有实现`java.io.Serializable`接口。
 
-## Java中的`final`关键字
+## 4. Java中的`final`关键字
 参考：[深入理解Java中的final关键字](http://www.importnew.com/7553.html)
-### `final`关键字的含义
+### 4.1. `final`关键字的含义
 final在Java中是一个保留的关键字，可以声明成员变量、方法、类以及本地变量。一旦你将引用声明作final，你将不能改变这个引用了，编译器会检查代码，如果你试图将变量再次初始化的话，编译器会报编译错误
-### `final`变量/引用
+### 4.2. `final`变量/引用
 ```java
 public static final String LOAN = "loan";
 LOAN = new String("loan") //invalid compilation error
 ```
-### `final`方法
+### 4.3. `final`方法
 方法不可以被子类的方法重写。
 ```java
 class PersonalLoan{
@@ -298,21 +300,21 @@ class CheapPersonalLoan extends PersonalLoan{
     }
 }
 ```
-### `final`类
+### 4.4. `final`类
 final类通常功能是完整的，它们不能被继承。
 ```java
 final class PersonalLoan{}
 class CheapPersonalLoan extends PersonalLoan{  //compilation error: cannot inherit from final class
 }
 ```
-### `final`关键字的好处
+### 4.5. `final`关键字的好处
 下面总结了一些使用final关键字的好处
 - final关键字提高了性能。JVM和Java应用都会缓存final变量。
 - final变量可以安全的在多线程环境下进行共享，而不需要额外的同步开销。
 - 使用final关键字，JVM会对方法、变量及类进行优化。
 - 不可变类：创建不可变类要使用final关键字。不可变类是指它的对象一旦被创建了就不能被更改了。String是不可变类的代表。不可变类有很多好处，譬如它们的对象是只读的，可以在多线程环境下安全的共享，不用额外的同步开销等等。
 
-## Java中的`transient`关键字
+## 5. Java中的`transient`关键字
 参考：[Java transient关键字使用小记](https://mp.weixin.qq.com/s?subscene=23&__biz=MzIwMTY0NDU3Nw==&mid=2651934932&idx=1&sn=0110681e23e281953bd9b9efdf93a3c4&chksm=8d0f3f9aba78b68c4b265246667458175b767a5aec1e425c019bf6ae5f1f86ff867c6b1be878&scene=7#rd)
 
 - 一旦变量被transient修饰，变量将不再是对象持久化的一部分，该变量内容在序列化后无法获得访问。
@@ -321,7 +323,7 @@ class CheapPersonalLoan extends PersonalLoan{  //compilation error: cannot inher
 
 第三点确实没错（一个静态变量不管是否被transient修饰，均不能被序列化），反序列化后类中static型变量username的值为当前JVM中对应static变量的值，这个值是JVM中的不是反序列化得出的
 
-## Java中的`ListIterator`
+## 6. Java中的`ListIterator`
 参考：[JAVA中ListIterator和Iterator详解与辨析](http://blog.csdn.net/longshengguoji/article/details/41551491)
 
 - 双向迭代器
@@ -350,10 +352,27 @@ public static void reverse(List<?> list) {
     }
 ```
 
-## Java中的`HashMap`
+## 7. Java中的`HashMap`
 java中的`HashMap`是一直在发展变化的，从基本的思想出发到性能的逐渐优化。jdk8中的`HashMap`是有一些变化的。参考文章[Java 8系列之重新认识HashMap](https://tech.meituan.com/java-hashmap.html),有张图片讲的很好。
 
 ![jdk8-hashmap-put.png](https://tech.meituan.com/img/java-hashmap/hashMap%20put%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 
 - jdk8中链表长度超过8之后就转换成了一棵红黑树
 - jdk8中rehash过程更简单，不用重新计算，只需要检测多出来的一位是1还是0就行，是1的话就移动oldCap的长度，否则与原来位置相同。而且resize之后链表不会倒过来。
+
+## Java中的值传递与引用传递
+Java中只有值传递，将对象的引用进行赋值操作的时候传递的是改引用对象的地址。
+
+参考：[为什么说Java中只有值传递](http://www.10tiao.com/html/710/201804/2650121036/1.html)
+
+## `List<List<Integer>>`的使用问题
+```java
+// OK: ArrayList 是List接口的实现
+List<List<Integer>> list = new ArrayList<List<Integer>>();
+// ERROR: ArrayList<Integer> 不是 List<Integer> 的子类型。
+// 本来list里面即可以放数组也可以放链表，但是定义的时候却只能放数组，所以出错了
+List<List<Integer>> list = new ArrayList<ArrayList<Integer>>();
+```
+> This is a common misunderstanding when it comes to programming with generics, but it is an important concept to learn.  
+![common misunderstanding](https://i.stack.imgur.com/IW0vU.gif)  
+Box<Integer> is not a subtype of Box even though Integer is a subtype of Number.
