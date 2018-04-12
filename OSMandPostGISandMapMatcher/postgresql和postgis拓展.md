@@ -1,42 +1,76 @@
--------------------------------
-    PostGIS 学习笔记
-    @author： 陈凯恒
-    @createtime： 2017-12-29
--------------------------------
+---
+title: PostGIS 学习笔记
+categories: [postgres]
+tags: [postgres, postgis]
+---
+# postgresql和postgis拓展
 
-# PostGIS 学习笔记
 <!-- TOC -->
 
-- [什么是 PostGIS?](#什么是-postgis)
-- [如何安装 PostGIS?](#如何安装-postgis)
-- [如何使用 PostGIS?](#如何使用-postgis)
-    - [简单示例](#简单示例)
-    - [PostGIS的Geometry数据类型](#postgis的geometry数据类型)
-    - [PostGIS函数的分类](#postgis函数的分类)
-        - [字段处理函数](#字段处理函数)
-        - [几何关系函数](#几何关系函数)
-        - [几何分析函数](#几何分析函数)
-        - [读写函数](#读写函数)
-    - [使用PostGIS扩展函数](#使用postgis扩展函数)
-        - [管理类函数](#管理类函数)
-        - [数据类型的输入输出函数](#数据类型的输入输出函数)
-        - [量算函数](#量算函数)
-        - [几何操作函数](#几何操作函数)
-        - [PostGIS函数使用示例](#postgis函数使用示例)
-    - [建立PostGIS索引](#建立postgis索引)
-- [参考资料](#参考资料)
+- [1. postgresql安装](#1-postgresql安装)
+- [2. postgresql使用](#2-postgresql使用)
+- [3. postgis扩展安装](#3-postgis扩展安装)
+    - [3.1. ubuntu 安装](#31-ubuntu-安装)
+    - [3.2. centos 7 安装](#32-centos-7-安装)
+    - [3.3. 创建扩展](#33-创建扩展)
+- [4. 什么是 PostGIS](#4-什么是-postgis)
+- [5. 如何安装 PostGIS](#5-如何安装-postgis)
+- [6. 如何使用 PostGIS](#6-如何使用-postgis)
+    - [6.1. 简单示例](#61-简单示例)
+    - [6.2. PostGIS的Geometry数据类型](#62-postgis的geometry数据类型)
+    - [6.3. PostGIS函数的分类](#63-postgis函数的分类)
+        - [6.3.1. 字段处理函数](#631-字段处理函数)
+        - [6.3.2. 几何关系函数](#632-几何关系函数)
+        - [6.3.3. 几何分析函数](#633-几何分析函数)
+        - [6.3.4. 读写函数](#634-读写函数)
+    - [6.4. 使用PostGIS扩展函数](#64-使用postgis扩展函数)
+        - [6.4.1. 管理类函数](#641-管理类函数)
+        - [6.4.2. 数据类型的输入输出函数](#642-数据类型的输入输出函数)
+        - [6.4.3. 量算函数](#643-量算函数)
+        - [6.4.4. 几何操作函数](#644-几何操作函数)
+        - [6.4.5. PostGIS函数使用示例](#645-postgis函数使用示例)
+    - [6.5. 建立PostGIS索引](#65-建立postgis索引)
+- [7. 参考资料](#7-参考资料)
 
 <!-- /TOC -->
-## 什么是 PostGIS?
+## 1. postgresql安装
+安装过程参见[博客](http://www.cnblogs.com/z-sm/archive/2016/07/05/5644165.html),其中涉及到的主要问题： 
+- postgresql的版本选择问题
+- postgresql安装之后修改配置、添加用户、添加用户权限更改等等问题
+
+## 2. postgresql使用
+
+## 3. postgis扩展安装
+
+### 3.1. ubuntu 安装
+参考：[博客](https://www.howtoing.com/how-to-install-and-configure-postgis-on-ubuntu-14-04)  
+
+**注意**：很多博客中的安装过程只需要 `apt-get install postgis`，实际测试发现 `apt-get install postgis*` 最好。第一种安装方式可能没有postgis-scripts，导致在数据库中`create extension`执行时出现*[ERROR: could not open extension control file "/usr/share/postgresql/9.3/extension/ postgis.control": No such file or directory]*的错误。  
+
+### 3.2. centos 7 安装
+参考博客：[CentOS 7 源码安装PostGIS](https://my.oschina.net/freegis/blog/781657)：文章写得算是很不错了，只是需要注意一下postgres这个目录，有的时候指的是你自己的postgres的安装目录。
+
+### 3.3. 创建扩展
+创建扩展：postgis安装后在使用时，需要在使用的数据库中添加拓展，在相应数据库执行
+```sql
+create extension postgis
+```
+出现`CREAT EXTENSION`表示安装成功，可使用一下命令查看版本。
+```sql
+select PostGIS_version()
+```
+- 具体使用见[博客](https://www.howtoing.com/how-to-install-and-configure-postgis-on-ubuntu-14-04)
+
+## 4. 什么是 PostGIS
 参考：[PostGIS官网](https://postgis.net/)  
 **Wiki定义**：  
 PostGIS 是一个开源程序，它为对象－关系型数据库PostgreSQL提供了存储空间地理数据的支持，使PostgreSQL成为了一个空间数据库，能够进行空间数据管理、数量测量与几何拓扑分析。PostGIS 实现了Open Geospatial Consortium所提出的基本要素类（点、线、面、多点、多线、多面等）的SQL实现参考。
 
-## 如何安装 PostGIS?
+## 5. 如何安装 PostGIS
 安装针对Ubuntu系统，参见文档 [Postgresql安装和postgis拓展安装](postgresql安装和postgis拓展安装.md)
 
-##  如何使用 PostGIS?
-### 简单示例
+## 6. 如何使用 PostGIS
+### 6.1. 简单示例
 ```sql
 CREATE DATABASE demo TEMPLATE=template_postgis;
 CREATE TABLE cities ( id int4, name varchar(50) );
@@ -77,7 +111,7 @@ SELECT p1.name,p2.name,ST_Distance_Sphere(p1.the_geom,p2.the_geom) FROM cities A
         East London,SA  | London, Ontario |   13892160.9525778
         (3 rows)
 
-### PostGIS的Geometry数据类型
+### 6.2. PostGIS的Geometry数据类型
 Geometry可以说是PostGIS最重要的一个概念，是“几何体”的意思，由于PostGIS很好地遵守OGC的”Simple Feature for Specification for SQL”规范，目前支持的几何体类型包含其实例有：
 ```
 POINT(1 1)
@@ -97,9 +131,9 @@ select AddGeometryColumn('test1','pt',-1,'GEOMETRY',2);
 select pt from test1;
 ```
 
-### PostGIS函数的分类
+### 6.3. PostGIS函数的分类
 PostGIS函数大致可以分为以下四类:
-#### 字段处理函数
+#### 6.3.1. 字段处理函数
 这类函数当前一共有3个，分别是：
 - `AddGeometryColumn(var1,var2,var3,var4,var5,var6)`：  
 为已有的数据表增加一个地理几何数据字段。Var1代表数据表的模式(schema)的名字，一般是public，也可以省略，则使用当前的缺省模式；var2是已有的数据表的名字；var3是新的地理数据字段的名字；var4是SRID值，不确定的话就取-1吧；var5是地理数据的类型，可以是POINT等；var6是指该几何数据是二维还是三维数据。  
@@ -112,25 +146,25 @@ PostGIS函数大致可以分为以下四类:
 显然是删除一个地理数据字段的；
 - `SetSRID` 函数：  
 显然是设置SRID值的。
-#### 几何关系函数
+#### 6.3.2. 几何关系函数
 这类函数目前共有10个，分别是：  
 `Distance Equals Disjoint Intersects Touches Crosses Within Overlaps Contains Relate`
-#### 几何分析函数
+#### 6.3.3. 几何分析函数
 这类函数目前共有12个，分别是：  
 `Centroid Area Lenth PointOnSurface Boundary Buffer ConvexHull Intersection SymDifference Difference GeomUnion MemGeomUnion`
-#### 读写函数
+#### 6.3.4. 读写函数
 这类函数很多，主要是用于在各种数据类型之间的转换，尤其是在于Geometry数据类型与其他如字符型等数据类型之间的转换，函数名如`AsText、GeomFromText`等，其作用是显然的。
-### 使用PostGIS扩展函数
+### 6.4. 使用PostGIS扩展函数
 除了上述遵循OpenGIS的函数之外，PostGIS还自行扩展了一些当前OpenGIS规范之外的函数，主要包括以下几类：
-#### 管理类函数
+#### 6.4.1. 管理类函数
 扩展的管理类函数主要包括一些软件版本查询函数，如postgis_version()、postgis_geos_version()、postgis_proj_version()函数等，分别查询当前的PostGIS的版本及其使用的Geos和Proj库的版本。
-#### 数据类型的输入输出函数
+#### 6.4.2. 数据类型的输入输出函数
 除了OpenGIS定义的地理数据类型之外，PostGIS还对数据类型进行了扩展，这种扩展主要是两方面的扩展，一是把二维的数据向三维和四维扩展；二就是在WKT和WKB数据类型基础上扩展出EWKT和EWKB数据类型。PostGIS提供了在这些地理数据类型和常用数据类型如字符型、浮点型数据之间进行转换的函数。
-#### 量算函数
+#### 6.4.3. 量算函数
 如length3d函数是对length2d函数的扩展。
-#### 几何操作函数
+#### 6.4.4. 几何操作函数
 如addBBox(geometry)函数给所给的几何体加上一个边框。如simplify(geometry,tolerance)函数可以对折线和多边形利用Douglas-Peuker算法进行一些节点进行删除，从而使表现的图形更简单而清晰，在网络传输数据时具有更高的效率。
-#### PostGIS函数使用示例
+#### 6.4.5. PostGIS函数使用示例
 - integer ST_NPoints(geometry g1); 返回geometry中包含多少个point
     ```sql
     SELECT ST_NPoints(ST_GeomFromText('LINESTRING(77.29 29.07,77.42 29.26,77.27 29.31,77.29 29.07)'));
@@ -141,11 +175,11 @@ PostGIS函数大致可以分为以下四类:
     SELECT ST_AsText(ST_PointN(ST_GeomFromText('CIRCULARSTRING(1 2, 3 2, 1 2)'),2));
     --result:POINT(3 2)
     ```
-### 建立PostGIS索引
+### 6.5. 建立PostGIS索引
 当数据库的记录增大的时候，如果没有建立索引的话，操作的效率就显著下降。POstGIS建议当记录数超过几千的时候就应该建立索引，而GIS数据库一般都是海量数据，所以对PostGIS而言，索引就非常重要。 
 
 
-## 参考资料
+## 7. 参考资料
 [1] [PostGIS维基百科介绍](https://zh.wikipedia.org/wiki/PostGIS)  
 [2] [PostGIS快速入门](https://live.osgeo.org/zh/quickstart/postgis_quickstart.html)  
 [3] [PostGIS简介](http://blog.csdn.net/shixiaoguo90/article/details/30034429)  
