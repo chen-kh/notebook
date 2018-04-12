@@ -85,3 +85,27 @@ scp -l 400 ib_logfile2 root@mysql-2:/tmp
   rsync -auvz --progress --delete --bwlimit=60 远程的文件  本地的文件
   rsync -auvz --progress --delete --bwlimit=60 本地的文件  远程的文件
 ```
+
+## 查看文件大小并排序
+参考资料
+- [Linux命令之查看文件占用空间大小-du,df](https://blog.csdn.net/wangjunjun2008/article/details/19840671)
+- [du命令 实现Linux 某个文件夹下的文件按大小排序](http://www.cnblogs.com/mfryf/p/3243211.html)
+
+```sh
+df -lh
+
+# 按字节排序
+du -s /usr/* | sort -rn
+
+# 按兆（M）来排序
+du -sh /usr/* | sort -rn
+
+# 选出排在前面的10个
+du -s /usr/* | sort -rn | head
+
+# 选出排在后面的10个
+du -s /usr/* | sort -rn | tail
+
+du -h –-max-depth=0 user
+du -sh –-max-depth=2 | more
+```

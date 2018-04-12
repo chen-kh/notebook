@@ -11,9 +11,17 @@
 - postgresql的版本选择问题
 - postgresql安装之后修改配置、添加用户、添加用户权限更改等等问题
 
+
 ## postgis扩展安装
-### 安装过程参见[博客](https://www.howtoing.com/how-to-install-and-configure-postgis-on-ubuntu-14-04)  
+
+### ubuntu 安装
+参考：[博客](https://www.howtoing.com/how-to-install-and-configure-postgis-on-ubuntu-14-04)  
+
 **注意**：很多博客中的安装过程只需要 `apt-get install postgis`，实际测试发现 `apt-get install postgis*` 最好。第一种安装方式可能没有postgis-scripts，导致在数据库中`create extension`执行时出现*[ERROR: could not open extension control file "/usr/share/postgresql/9.3/extension/ postgis.control": No such file or directory]*的错误。  
+
+### centos 7 安装
+参考博客：[CentOS 7 源码安装PostGIS](https://my.oschina.net/freegis/blog/781657)：文章写得算是很不错了，只是需要注意一下postgres这个目录，有的时候指的是你自己的postgres的安装目录。
+
 ### PostGIS使用
 创建扩展：postgis安装后在使用时，需要在使用的数据库中添加拓展，在相应数据库执行
 ```sql
@@ -23,4 +31,4 @@ create extension postgis
 ```sql
 select PostGIS_version()
 ```
-### 具体使用见[博客](https://www.howtoing.com/how-to-install-and-configure-postgis-on-ubuntu-14-04)
+- 具体使用见[博客](https://www.howtoing.com/how-to-install-and-configure-postgis-on-ubuntu-14-04)
