@@ -34,7 +34,7 @@ tags: [Java, JVM, 随笔]
 等待线程结束的方法，当然可以通过在`run()`函数里面更改标示位（或者变量），然后检测这个标示位（变量）来判断线程是否已经完成任务。但是，但是，以上都是多余的（而且是非常复杂，不实用的设计）。JDK本身就已经提供了判断线程结束的方法。参考文章：[Java主线程等待子线程、线程池](http://blog.csdn.net/xiao__gui/article/details/9213413)
 
 - 最基本的方法：调用`thread.join()`
-- 不太基本的方法：设置`CountDownLatch`成员
+- 不太基本的方法：设置`CountDownLatch`成员，run方法内调用`countDownLatch.countDown();`主线程调用`countDownLatch.await();`
 - 等待线程池所有线程执行完成的方法：`boolean awaitTermination(long timeout, TimeUnit unit)`
 
 ***代码1：join()方法调用***

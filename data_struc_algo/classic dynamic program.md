@@ -10,9 +10,12 @@ tags: [数据结构与算法, 动态规划]
 - [2. 最长公共子序列](#2-最长公共子序列)
 - [3. 最长不重复子串](#3-最长不重复子串)
 - [4. 最大连续子序列之和](#4-最大连续子序列之和)
-- [5. 到达终点的路线条数](#5-到达终点的路线条数)
+- [5. 到达终点的路线条数/登台阶问题](#5-到达终点的路线条数登台阶问题)
 - [6. 数塔问题](#6-数塔问题)
 - [7. 背包问题及其延伸](#7-背包问题及其延伸)
+    - [0-1背包问题](#0-1背包问题)
+    - [完全背包问题](#完全背包问题)
+    - [拼硬币问题](#拼硬币问题)
 - [8. 最长递增子序列(LIS)](#8-最长递增子序列lis)
 - [9. 代码及示例](#9-代码及示例)
 
@@ -36,8 +39,8 @@ tags: [数据结构与算法, 动态规划]
 - 转移方程：  
 使用`HashMap`存储`key-value`对，其中`key=字符`，`value=字符所在index`。问题转换为新填入一个字符之后，最长不重复子串如何变化的问题。  
 `dp[i]`表示以第i个字符为结尾的不重复子串的长度。  
-`condition = str[i] not in hashmap || str[i] in hashmap but hashmap[str[i]] <= (i - dp[i])`
-`dp[i]=dp[i-1]+1  if condition==true`
+`condition = str[i] not in hashmap || str[i] in hashmap but hashmap[str[i]] <= (i - dp[i])`  
+`dp[i]=dp[i-1]+1  if condition==true`  
 `dp[i]=1          if condition==false`
 
 ## 4. 最大连续子序列之和
@@ -49,10 +52,11 @@ tags: [数据结构与算法, 动态规划]
 
 - 提示：  
 可以使用状态矩阵，也可以使用两个变量代替状态矩阵，从而将空间复杂度降低到O(1)
-## 5. 到达终点的路线条数
+## 5. 到达终点的路线条数/登台阶问题
 ## 6. 数塔问题
 
 ## 7. 背包问题及其延伸
+### 0-1背包问题
 - 描述  
 有N件物品和一个容量为V的背包。第i件物品的费用是c[i]，价值是w[i]。求解将哪些物品装入背包可使价值总和最大。
 
@@ -60,7 +64,8 @@ tags: [数据结构与算法, 动态规划]
 将问题转化为放不放进最后一个背包进去。  
 `dp[i][j]` 表示前i个物品放到承重为j的背包里的最大价值。  
 `dp[i][j] = max(dp[i-1][j],dp[i-1][j-weight[i]] + value[i]`
-
+### 完全背包问题
+### 拼硬币问题
 ## 8. 最长递增子序列(LIS)
 - 描述  
 给定一个序列 `An = a1 ,a2 ,  ... , an` ，找出最长的子序列使得对所有 `i<j, ai < aj`。
@@ -86,9 +91,10 @@ public class ClassicDP {
 		System.out.println(max);
 	}
 
-	// 最大连续子序列之和
-	// 状态转移方程： sum[i]=max(sum[i-1]+a[i],a[i])
-	// 可以使用状态矩阵，也可以使用两个变量代替状态矩阵，从而将空间复杂度降低到O(1)
+	/*
+	 * 最大连续子序列之和<p>状态转移方程： sum[i]=max(sum[i-1]+a[i],a[i])<p>
+	 * 可以使用状态矩阵，也可以使用两个变量代替状态矩阵，从而将空间复杂度降低到O(1)
+	 */
 	public static int MaxSumofContinousSubSequence(int[] seq, boolean extraSpaceAllowable) {
 		if (seq == null || seq.length <= 0)
 			return 0;
@@ -113,6 +119,51 @@ public class ClassicDP {
 		}
 		System.out.println(max);
 		return max;
+	}
+	/*
+	 * 背包问题1：经典（0-1）背包问题<p>
+	 */
+	
+	/*
+	 * 登台阶问题：每次可以走a[]里面的步数，走到第n个台阶的走法有多少种。<p>
+	 * 状态转移方程：f(n) = f(n-a[0]) + f(n - a[1]) + ... + f(n - a[m-1]);
+	 */
+	public static int stepUps(int[] stepType, int n){
+		int[] dp = new int[n + 1];
+		dp[0] = 1;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 0; j < stepType.length; j++) {
+				if (i >= stepType[j]) {
+					dp[i] += dp[i - stepType[j]];
+				}
+			}
+		}
+		return dp[n];
+	}
+	/*
+	 * 背包问题?/无限次数拼硬币问题:与登台阶的问题的不同是，这里找的是不同的组合数，而登台阶是不同的排列数，所以是有些不一样的。<p>
+	 * 状态转移方程：<p>
+	 * f(i, m) = f(i-1, m) + f(i-1, m - 1 * a[i-1]) + f(i-1, m - 2 * a[i - 1]) + ... <p>
+	 * f(i, m)表示用前i个硬币拼凑成m的拼法
+	 * 或者<p>
+	 * f(m) = f() 
+	 */
+	public static int patchCoins(int[] a, int m) {
+		int a_len = a.length;
+		int[][] dp = new int[a_len + 1][m + 1];
+		for (int i = 0; i <= m; i++)
+			dp[0][i] = 0;
+		for (int i = 0; i <= a_len; i++)
+			dp[i][0] = 1;
+		for (int i = 1; i <= a_len; ++i) {
+			for (int j = 1; j <= m; ++j) {
+				dp[i][j] = 0;
+				for (int k = 0; k <= j / a[i - 1]; ++k) {
+					dp[i][j] += dp[i - 1][j - k * a[i - 1]];
+				}
+			}
+		}
+		return dp[a_len][m];
 	}
 }
 

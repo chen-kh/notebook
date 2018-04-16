@@ -67,24 +67,4 @@ Hadoop的面试内容主要分为3各部分，首先接触过Hadoop的一定会�
 HDFS应用需要一个“一次写入多次读取”的文件访问模型。一个文件经过创建、写入和关闭之后就不需要改变。这一假设简化了数据一致性问题，并且使高吞吐量的数据访问成为可能。Map/Reduce应用或者网络爬虫应用都非常适合这个模型。目前还有计划在将来扩充这个模型，使之支持文件的附加写操作。
 
 ## Hadoop DataBase
-![HBase架构1](http://img.blog.csdn.net/20170528230853515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemdfaG92ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
-
-参考资料：
-- [Hbase原理、基本概念、基本架构](https://blog.csdn.net/woshiwanxin102213/article/details/17584043)
-- [HBase笔记：存储结构](http://blog.javachen.com/2013/06/15/hbase-note-about-data-structure.html)
-
-### 总结性介绍
-- HBase是一个构建在HDFS上的分布式列存储系统，是基于Google BigTable模型开发的，典型的key/value系统。
-- 与传统mysql、Oracle数据库的主要区别就是列式存储和夯实存储的区别。
-- Hbase适合大量插入同时又有读的情况。输入一个Key获取一个value或输入一些key获得一些value。
-- Hbase目标主要依靠横向扩展，通过不断增加廉价的商用服务器，来增加计算和存储能力。
-- Hbase表的特点
-    - 大：一个表可以有数十亿行，上百万列；
-    - 无模式：每行都有一个可排序的主键和任意多的列，列可以根据需要动态的增加，同一张表中不同的行可以有截然不同的列；
-    - 面向列：面向列（族）的存储和权限控制，列（族）独立检索；
-    - 稀疏：空（null）列并不占用存储空间，表可以设计的非常稀疏；
-    - 数据多版本：每个单元中的数据可以有多个版本，默认情况下版本号自动分配，是单元格插入时的时间戳；
-    - 数据类型单一：Hbase中的数据都是字符串，没有类型。
-
-### 存储结构
-
+参见: [HBase知识整理](HBase知识整理.md)
