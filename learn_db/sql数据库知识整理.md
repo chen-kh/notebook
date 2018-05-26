@@ -40,3 +40,27 @@ select * from record;
 -- (1 row)
 
 ```
+
+## postgres sql 里面如何实现 insert ignore功能
+参考：
+- [【原创】PostgreSQL 实现MySQL "insert ignore" 语法](http://blog.51cto.com/yueliangdao0608/1352270)
+- [stackOverFlow:how to emulate “insert ignore” and “on duplicate key update” (sql merge) with postgresql?](https://stackoverflow.com/questions/1009584/how-to-emulate-insert-ignore-and-on-duplicate-key-update-sql-merge-with-po)
+### 使用`on conflict (conflict_key) do nothing/update...`
+适用于9.5以上版本，以下版本没有这个功能。
+```sql
+INSERT INTO user_logins (username, logins)
+VALUES ('Naomi',1),('James',1) 
+ON CONFLICT (username)
+DO UPDATE SET logins = user_logins.logins + EXCLUDED.logins;
+```
+### 使用`rule`
+```sql
+CREATE RULE "my_table_on_duplicate_ignore" AS ON INSERT TO "my_table"
+  WHERE EXISTS(SELECT 1 FROM my_table 
+                WHERE (pk_col_1, pk_col_2)=(NEW.pk_col_1, NEW.pk_col_2))
+  DO INSTEAD NOTHING;
+INSERT INTO my_table SELECT * FROM another_schema.my_table WHERE some_cond;
+DROP RULE "my_table_on_duplicate_ignore" ON "my_table";
+```
+### 使用触发器或者存储过程
+参见参考资料

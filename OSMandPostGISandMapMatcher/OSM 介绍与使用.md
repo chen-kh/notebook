@@ -1,27 +1,29 @@
 ---
-title: OSM 介绍与使用
+title: OSM，OSRM介绍与使用
 categories: [OSM]
 tags: [OSM, osm2ogsql]
 ---
-# OSM 介绍与使用
+# OSM，OSRM介绍与使用
 <!-- TOC -->
 
-- [什么是OSM?](#什么是osm)
-- [获取地图数据](#获取地图数据)
-- [osm数据导入](#osm数据导入)
-    - [centos 7: osm2pgsql安装](#centos-7-osm2pgsql安装)
-    - [ubuntu: osm2pgsql安装](#ubuntu-osm2pgsql安装)
-    - [导入地图数据](#导入地图数据)
-- [基于OSM的开源导航服务](#基于osm的开源导航服务)
-    - [OSRM安装](#osrm安装)
-    - [导航API重要参数记录](#导航api重要参数记录)
-- [参考资料](#参考资料)
+- [1. 什么是OSM?](#1-什么是osm)
+- [2. 获取地图数据](#2-获取地图数据)
+- [3. osm数据导入](#3-osm数据导入)
+    - [3.1. centos 7: osm2pgsql安装](#31-centos-7-osm2pgsql安装)
+    - [3.2. ubuntu: osm2pgsql安装](#32-ubuntu-osm2pgsql安装)
+    - [3.3. 导入地图数据](#33-导入地图数据)
+        - [3.3.1. 三张临时表](#331-三张临时表)
+        - [3.3.2. 四个数据表](#332-四个数据表)
+- [4. 基于OSM的开源导航服务](#4-基于osm的开源导航服务)
+    - [4.1. OSRM安装](#41-osrm安装)
+    - [4.2. 导航API重要参数记录](#42-导航api重要参数记录)
+- [5. 参考资料](#5-参考资料)
 
 <!-- /TOC -->
-## 什么是OSM?
+## 1. 什么是OSM?
 开放街道地图（OpenStreetMap，简称OSM）是一个网上地图协作计划，目标是创造一个内容自由且能让所有人编辑的世界地图[wiki：http://wiki.openstreetmap.org/wiki/Main_Page].尤其值得称道的是，osm数据开源，可以自由下载使用。
 
-## 获取地图数据
+## 2. 获取地图数据
 获取地图数据主要分两种情况，获取大范围数据还是小范围数据。
 
 **小范围数据的获取**比较简单，基本`进入官网->点击导出->手动选择不同的区域->在地图选定导出范围->点击导出`就出来了。其实就是做了一个url请求，也可以根据在url中直接填写经纬度。
@@ -30,8 +32,8 @@ tags: [OSM, osm2ogsql]
 
 **大范围数据的获取** 有多种方式，主要参考上图中的篮框中的内容，这里不多记录，如果在地图中框选范围太大，导出失败，可以直接点击Overpass API的连接，就能够导出数据来了，数据格式可以定义为xml文件。另外，知乎上有个介绍写的很好，参考[获取OpenStreetMap（OSM）数据方法知多少？](https://zhuanlan.zhihu.com/p/25889246)，主要参考其中的第一种方法。
 
-## osm数据导入
-### centos 7: osm2pgsql安装
+## 3. osm数据导入
+### 3.1. centos 7: osm2pgsql安装
 这个简直太神奇了，参照博客：[centos 7 osm2pgsql安装](http://www.cnblogs.com/think8848/p/6011073.html)。基本内容/过程没有问题，只是我安装过程中出现了这么几个问题。
 - boost-devel版本太低
 - gcc版本太低
@@ -128,12 +130,12 @@ ln -s libstdc++.so.6.0.18 libstdc++.so.6
 - [CentOS gcc升级4.8步骤](https://blog.csdn.net/clirus/article/details/62424517)
 - [CentOS7部署osm2pgsql](https://www.bbsmax.com/A/GBJrlMBd0e/)
 
-### ubuntu: osm2pgsql安装
+### 3.2. ubuntu: osm2pgsql安装
 ```sh
 # ubuntu版本安装就很简单了，一条命令
 apt-get intall osm2pgsql
 ```
-### 导入地图数据
+### 3.3. 导入地图数据
 地图数据导入pg数据库，使用osm2pgsql导入，命令类似于
 ```shell
 # 如果出现ident authentication for user postgres问题的话，su - postgres切换用户
@@ -153,21 +155,31 @@ planet_osm_rels
 
 ![osm数据导入后的表](osm_table_imported.png)
 
-- 三张临时表：planet_osm_nodes, planet_osm_ways, planet_osm_rels  
-需要注意的是nodes表中的lat和lon是bigint类型的数据，它们并不是经纬度的多少倍或是什么样子，而是一种表示方式（你可以认为是一种编码方式）。从bigint类型转换到经纬度编码的过程，在进行osm2pgsql的时候其实已经做了，只不过数据改存到了point表里面的way值中，这是一种geometry数据类型，更方便使用。这也是这张临时表没什么用的原因。
+#### 3.3.1. 三张临时表
+`planet_osm_nodes, planet_osm_ways, planet_osm_rels`
 
-- planet_osm_point  
-将原始geometry数据展示成4326（也就是wgs84标准）格式的经纬度的代码类似于：
+需要注意的是nodes表中的lat和lon是bigint类型的数据（可以简单理解为去掉小数点的经纬度值）。从bigint类型转换到经纬度编码的过程，在进行osm2pgsql的时候其实已经做了，只不过数据改存到了point表里面的way值中，这是一种geometry数据类型，更方便使用。这也是这张临时表没什么用的原因。
+
+#### 3.3.2. 四个数据表  
+主要是roads是line的子集，有些道路只在line里面，每个表的具体解释可见以下网址：http://wiki.openstreetmap.org/wiki/Osm2pgsql/schema
+
+- planet_osm_line: contains all imported ways
+- planet_osm_point: is a subset of the node table, contains all imported nodes with tags，[planet_osm_point 和 planet_osm_nodes的区别](https://gis.stackexchange.com/questions/133149/planet-osm-point-versus-planet-osm-nodes-for-querying-places)。将原始geometry数据展示成4326（也就是wgs84标准）格式的经纬度的代码类似于：
 ```sql
-select ST_AsText(ST_Transform(way, 4326)) from planet_osm_point where osm_id = 1422005356
+select ST_AsText(ST_Transform(way, 4326)) from planet_osm_point where osm_id = 1422005356;
+/* output */
+/* POINT(116.2993276 39.9849500002653) */
 ```
+- planet_osm_polygon: contains all imported polygons. Relations seem to be resolved for that.
+- planet_osm_roads: contains a subset of planet_osm_line suitable for rendering at low zoom levels. planet_osm_line contains too many elements to render on overview maps.  
 
-## 基于OSM的开源导航服务
+
+## 4. 基于OSM的开源导航服务
 基于OSM的开源导航服务有OSRM和GraphHopper。这里重点记录OSRM，项目放在了github上，叫做[Open Source Routing Machine](https://github.com/Project-OSRM/osrm-backend)。
 
 官网地址：http://project-osrm.org/  
 API文档说明地址：http://project-osrm.org/docs/v5.10.0/api/#general-options
-### OSRM安装
+### 4.1. OSRM安装
 参见github项目的[**README**](https://github.com/Project-OSRM/osrm-backend)和[OSRM笔记](https://my.oschina.net/u/1266171/blog/918232)（博客），都写的很详细，后者基本是前者的翻译。
 
 涉及的主要过程记录在下：
@@ -201,9 +213,20 @@ xdg-open 'http://127.0.0.1:9966'
 
     ![route_workwell](osrm_route_workwell.png)
 
-### 导航API重要参数记录
+### 4.2. 导航API重要参数记录
 [API文档](http://project-osrm.org/docs/v5.10.0/api/#general-options)中的说明很详细，仔细读一遍就知道各个字段是什么意思了。
-
+```
+格式：因为是导航功能，这里的coordinates就是指定的行走经过顺序
+/route/v1/{profile}/{coordinates}?alternatives={true|false|number}&steps={true|false}&geometries={polyline|polyline6|geojson}&overview={full|simplified|false}&annotations={true|false}
+```
+| Option	| Values	|Description|
+|:---|:--|:--|
+|alternatives|	true ,  false (default), or Number	|Search for alternative routes. Passing a number  alternatives=n searches for up to  n alternative routes. *|
+|steps|	true ,  false (default)	|Returned route steps for each route leg。会显示具体的步骤信息，比如在当前十字路口右转|
+|annotations|	true ,  false (default),  nodes ,  distance , duration ,  datasources ,  weight ,  speed	|Returns additional metadata for each coordinate along the route geometry. 一般只选择true还是false，true的话其中包含很多信息，其中nodes记录了osm地图格式数据中的路段id|
+|geometries	|polyline (default),  polyline6 ,  geojson	|Returned route geometry format (influences overview and per step) 表示以什么样的形式返回表示geometries数据，polyline和polyline6都是postgis中表示的集合类型（看起来形似乱码），geojson表示的是json格式的数据，其中coordinates字段记录了经纬度|
+|overview	|simplified (default),  full ,  false	|Add overview geometry either full, simplified according to highest zoom level it could be display on, or not at all. 可以简单理解为对geometry的描述，描述的仔细还是不仔细，其实就是描述这段路程使用的轨迹点的数量的多少，比如simplified长这样：<br>![overview——simplified](overview_simplified.png)<br>而full长这样：<br>![overview_full](overview_full.png)|
+|continue_straight|	default (default),  true ,  false	|Forces the route to keep going straight at waypoints constraining uturns there even if it would be faster. Default value depends on the profile.|
 - RouteLeg对象中的annotations属性
 
     distance和duration单位分别为米和秒，speed单位米/秒，由distance/duration计算得到。nodes就是osm_node表中的id（也是osm_line表中的osm_id）
@@ -223,7 +246,7 @@ xdg-open 'http://127.0.0.1:9966'
 }
 ```
        
-## 参考资料
+## 5. 参考资料
 1. [OSM入门+搭建地图服务](http://www.cnblogs.com/LBSer/p/4451471.html), 讲的很详细，值得参考一看
 2. [How do I convert the coordinate data from osm into actual longitude latitude points](https://gis.stackexchange.com/questions/163173/how-do-i-convert-the-coordinate-data-from-osm-into-actual-longitude-latitude-poi)
 3. [What format is lat/long stored in OSM PostGIS?](https://gis.stackexchange.com/questions/57003/what-format-is-lat-long-stored-in-osm-postgis)

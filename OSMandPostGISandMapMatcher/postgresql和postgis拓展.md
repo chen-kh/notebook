@@ -4,7 +4,6 @@ categories: [postgres]
 tags: [postgres, postgis]
 ---
 # postgresql和postgis拓展
-
 <!-- TOC -->
 
 - [1. postgresql安装](#1-postgresql安装)
@@ -32,6 +31,7 @@ tags: [postgres, postgis]
 - [6. 参考资料](#6-参考资料)
 
 <!-- /TOC -->
+
 ## 1. postgresql安装
 安装过程参见[博客](http://www.cnblogs.com/z-sm/archive/2016/07/05/5644165.html),其中涉及到的主要问题： 
 - postgresql的版本选择问题
