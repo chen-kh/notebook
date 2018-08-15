@@ -17,7 +17,7 @@ tags: [分布式系统, HBase, 面试]
 
 ## 1. 总结性介绍
 - HBase是一个构建在HDFS上的分布式列存储系统，是基于Google BigTable模型开发的，典型的key/value系统。
-- 与传统mysql、Oracle数据库的主要区别就是列式存储和夯实存储的区别。
+- 与传统mysql、Oracle数据库的主要区别就是列式存储和行式存储的区别。
 - Hbase适合大量插入同时又有读的情况。输入一个Key获取一个value或输入一些key获得一些value。
 - Hbase目标主要依靠横向扩展，通过不断增加廉价的商用服务器，来增加计算和存储能力。
 - Hbase表的特点
