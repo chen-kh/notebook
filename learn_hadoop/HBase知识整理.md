@@ -6,15 +6,20 @@ tags: [分布式系统, HBase, 面试]
 # HBase面试整理
 <!-- TOC -->
 
-- [1. 总结性介绍](#1-总结性介绍)
-- [2. 存储结构](#2-存储结构)
+- [HBase面试整理](#hbase)
+    - [1. 总结性介绍](#1)
+    - [2. 存储形式-表结构](#2)
+    - [3. 存储结构-HRegion, HStore, HFile](#3--hregion--hstore--hfile)
+    - [4. region 定位问题](#4-region)
+        - [4.1. -ROOT- 和 .META. 怎么来的](#41--root---meta)
+        - [4.2. -ROOT- 和 .META. 的存储结构](#42--root---meta)
+    - [5. 一致性问题：HBase的读写一致性是怎么保证的？做到了什么程度？](#5-hbase)
 
 <!-- /TOC -->
 参考资料：
 - [列式存储hbase系统架构学习](http://www.ixirong.com/2015/07/16/learn-about-hbase/)
-- [Hbase原理、基本概念、基本架构](https://blog.csdn.net/woshiwanxin102213/article/details/17584043)
 - [HBase笔记：存储结构](http://blog.javachen.com/2013/06/15/hbase-note-about-data-structure.html)
-
+- [HBase region查找过程](https://blog.csdn.net/qq_26222859/article/details/80257298)
 ## 1. 总结性介绍
 - HBase是一个构建在HDFS上的分布式列存储系统，是基于Google BigTable模型开发的，典型的key/value系统。
 - 与传统mysql、Oracle数据库的主要区别就是列式存储和行式存储的区别。
@@ -28,7 +33,13 @@ tags: [分布式系统, HBase, 面试]
     - 数据多版本：每个单元中的数据可以有多个版本，默认情况下版本号自动分配，是单元格插入时的时间戳；
     - 数据类型单一：Hbase中的数据都是字符串，没有类型。
 
-## 2. 存储结构
+## 2. 存储形式-表结构
+- table:
+- rowkey
+- column family
+- column
+
+## 3. 存储结构-HRegion, HStore, HFile
 ![HBase架构1](hbase_structure.png)
 
 Zookeeper：
@@ -48,3 +59,18 @@ HMaster:
 HRegion Server
 - Region server维护Master分配给它的region，处理对这些region的IO请求
 - Region server负责切分在运行过程中变得过大的region
+
+
+## 4. region 定位问题
+### 4.1. -ROOT- 和 .META. 怎么来的
+如果要insert一个数据，需要找到相应的Region，如何找呢？就需要一个所有region的meta信息，但是region可能很多，那就分级来搞，先有一个-ROOT-索引.META.的内容，.META.再索引Region的内容。不需要再多级别了，因为这两个级别就可以存储2^34个region了，足够使用，再多了反而增加复杂度和网络开销。
+
+### 4.2. -ROOT- 和 .META. 的存储结构
+可以视为一般的region，存储形式都是相同的。只不过rowkey不太一样。
+
+## 5. 一致性问题：HBase的读写一致性是怎么保证的？做到了什么程度？
+参考：
+- [HBase-强一致性详解](https://www.cnblogs.com/captainlucky/p/4720986.html)
+- [LSM 算法的原理是什么？](http://www.open-open.com/lib/view/open1424916275249.html)
+
+> 从一开始就知道hbase是CAP中的CP系统,即hbase是强一致性的.我原来一直以为hbase的强一致性是因为底层的HDFS写入时,必须所有副本都写入成功才能返回.最近才想明白,hbase之所以是CP系统,实际和底层HDFS无关,它是CP系统,是因为对每一个region同时只有一台region server为它服务,对一个region所有的操作请求,都由这一台region server来响应,自然是强一致性的.在这台region server fail的时候,它管理的region failover到其他region server时,需要根据WAL log来redo,这时候进行redo的region应该是unavailable的,所以hbase降低了可用性,提高了一致性.设想一下,如果redo的region能够响应请求,那么可用性提高了,则必然返回不一致的数据(因为redo可能还没完成),那么hbase就降低一致性来提高可用性了.

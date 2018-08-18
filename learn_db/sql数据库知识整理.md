@@ -64,3 +64,7 @@ DROP RULE "my_table_on_duplicate_ignore" ON "my_table";
 ```
 ### 使用触发器或者存储过程
 参见参考资料
+
+## 关系型数据库和分布式数据库如何通过log保证数据的可恢复性？
+这里面涉及到sql数据库的ACID特性，mysql有binlog，Hbase有hlog都要好好看看。
+

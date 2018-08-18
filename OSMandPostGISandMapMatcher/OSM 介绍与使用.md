@@ -6,18 +6,19 @@ tags: [OSM, osm2ogsql]
 # OSM，OSRM介绍与使用
 <!-- TOC -->
 
-- [1. 什么是OSM?](#1-什么是osm)
-- [2. 获取地图数据](#2-获取地图数据)
-- [3. osm数据导入](#3-osm数据导入)
-    - [3.1. centos 7: osm2pgsql安装](#31-centos-7-osm2pgsql安装)
-    - [3.2. ubuntu: osm2pgsql安装](#32-ubuntu-osm2pgsql安装)
-    - [3.3. 导入地图数据](#33-导入地图数据)
-        - [3.3.1. 三张临时表](#331-三张临时表)
-        - [3.3.2. 四个数据表](#332-四个数据表)
-- [4. 基于OSM的开源导航服务](#4-基于osm的开源导航服务)
-    - [4.1. OSRM安装](#41-osrm安装)
-    - [4.2. 导航API重要参数记录](#42-导航api重要参数记录)
-- [5. 参考资料](#5-参考资料)
+- [OSM，OSRM介绍与使用](#osmosrm)
+    - [1. 什么是OSM?](#1-osm)
+    - [2. 获取地图数据](#2)
+    - [3. osm数据导入](#3-osm)
+        - [3.1. centos 7: osm2pgsql安装](#31-centos-7--osm2pgsql)
+        - [3.2. ubuntu: osm2pgsql安装](#32-ubuntu--osm2pgsql)
+        - [3.3. 导入地图数据](#33)
+            - [3.3.1. 三张临时表](#331)
+            - [3.3.2. 四个数据表](#332)
+    - [4. 基于OSM的开源导航服务](#4-osm)
+        - [4.1. OSRM安装](#41-osrm)
+        - [4.2. 导航API重要参数记录](#42-api)
+    - [5. 参考资料](#5)
 
 <!-- /TOC -->
 ## 1. 什么是OSM?
@@ -142,6 +143,8 @@ apt-get intall osm2pgsql
 # 但是需要注意postgres读取文件权限问题，把owner和group都改成postgres就好了。
 osm2pgsql -s -U postgres -d osm /tmp/map.xml -H 192.168.6.133 -W
 ```
+osm2pgsql命令参考：[Osm2pgsql常见命令](http://www.cnblogs.com/LCGIS/archive/2013/04/14/3021111.html)，主要是前缀-p参数挺有用的。
+
 **注**：osm2pgsql导入数据有两种模式， normal and slim mode。
 - normal mode会在内存中产生如下三张中间表，并在导入结束后丢弃，因此速度较快。  
 planet_osm_nodes  

@@ -7,13 +7,14 @@ tags: [Python, 虚拟环境]
 
 <!-- TOC -->
 
-- [什么是python的虚拟环境](#什么是python的虚拟环境)
-- [如何搭建python虚拟环境](#如何搭建python虚拟环境)
-    - [virtualenv的安装](#virtualenv的安装)
-    - [虚拟环境生命周期](#虚拟环境生命周期)
-    - [Virtaulenvwrapper](#virtaulenvwrapper)
-- [注意点](#注意点)
-- [参考资料](#参考资料)
+- [Python 虚拟环境学习与使用](#python)
+    - [什么是python的虚拟环境](#python)
+    - [如何搭建python虚拟环境](#python)
+        - [virtualenv的安装](#virtualenv)
+        - [虚拟环境生命周期](#)
+        - [Virtaulenvwrapper](#virtaulenvwrapper)
+    - [注意点](#)
+    - [参考资料](#)
 
 <!-- /TOC -->
 ## 什么是python的虚拟环境
@@ -25,12 +26,15 @@ tags: [Python, 虚拟环境]
 ### virtualenv的安装
 &emsp;&emsp;virtualenv实际上是一个第三方包，是管理虚拟环境的常用方法之一。Python3 中还自带了虚拟环境管理包。virtualenv的安装可以用easy_install或者pip安装。推荐使用pip安装。
 ```sh
-pip install virtualenv
+pip install virtualenv、
+# 也可以使用下面这种方法, 但需要多执行一句
+sudo apt-get install virtualenv
+sudo /usr/bin/easy_install3 virtualenv
 ```
 ### 虚拟环境生命周期
 **创建：**  
 ```sh
-virtualenv testvirdir  #创建名称为testvirdir的虚拟目录
+virtualenv testvirdir  #创建名称为testvirdir的虚拟目录 -p python3 指定python的版本
 cd testvirdir
 source bin/activate #激活虚拟环境
 python -V #测试python
