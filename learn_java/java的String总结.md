@@ -74,8 +74,8 @@ public class StringAck {
 		String s = new String("1");
 		String s2 = "1";
 		s.intern();
-		System.out.println(s == s2);
-		System.out.println(s.intern() == s2);
+		System.out.println(s == s2); //false
+		System.out.println(s.intern() == s2); // true
 
 		String s3 = new String("1") + new String("1");
 		// s3进行intern操作后将"11"这个字符串放进了常量池中，
@@ -84,11 +84,11 @@ public class StringAck {
 		s3.intern();
 		// s4创建的时候先看常量池有没有"11"，发现有，所以返回与s3相同的引用。
 		String s4 = "11";
-		System.out.println(s3 == s4);
+		System.out.println(s3 == s4); // true, 如果没有intern操作，这里的结果就是false
 		
 		String s5 = new String("1") + new String("1");
 		String s6 = "11";
-		System.out.println(s5 == s6);
+		System.out.println(s5 == s6); // false，起初认为s5.intern()没有被调用所以是false，调用后就是true了，但是也不对，调用s5.intern()之后两者还是不同，只能说第一次调用intern的对象，如果常量池中没有这个常量的话，会创建这个常量，而同时作为常量池的指针。之后new的对象不会继续成为常量指针了，因为已经存在了。
 	}
 }
 
