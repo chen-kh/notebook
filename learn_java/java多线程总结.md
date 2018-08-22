@@ -7,11 +7,13 @@ tags: [Java知识, 多线程]
 # Java多线程总结
 <!-- TOC -->
 
-- [1. 线程与进程的区别](#1-线程与进程的区别)
-- [2. 等待线程结束的方法有哪些？](#2-等待线程结束的方法有哪些)
-- [3. Java线程的生命周期](#3-java线程的生命周期)
-- [4. Thread和Runnable的区别与联系](#4-thread和runnable的区别与联系)
-- [5. 线程池: ThreadPool](#5-线程池-threadpool)
+- [Java多线程总结](#java多线程总结)
+    - [1. 线程与进程的区别](#1-线程与进程的区别)
+    - [2. 等待线程结束的方法有哪些？](#2-等待线程结束的方法有哪些)
+    - [3. Java线程的生命周期](#3-java线程的生命周期)
+    - [4. Thread和Runnable的区别与联系](#4-thread和runnable的区别与联系)
+    - [5. 线程池: ThreadPool](#5-线程池-threadpool)
+    - [final关键字与线程安全](#final关键字与线程安全)
 
 <!-- /TOC -->
 ## 1. 线程与进程的区别
@@ -127,3 +129,12 @@ public class Main{
 ## 4. Thread和Runnable的区别与联系
 
 ## 5. 线程池: ThreadPool
+
+## final关键字与线程安全
+参考资料：
+- [java多线程学习(九)final的内存语义](https://blog.csdn.net/Ditto_zhou/article/details/78738197)
+- [Thread-safety with the Java final keyword](https://www.javamex.com/tutorials/synchronization_final.shtml), [中文翻译版](https://www.cnblogs.com/mianlaoshu/articles/3648403.html)
+
+- final关键字在多线程使用中主要用在对属性的修饰上，这样可以保证该属性在多个线程中读线程安全。这种效果的作用机理与java内存模型有关，这里保证了类中的属性在构造函数结束前不可见（内存屏障），JMM禁止指针赋值操作在构造函数结束后运行。在多线程环境下，应该尽量多的使用final关键字。
+
+- java的concurrentHashMap就大量使用了final关键字
