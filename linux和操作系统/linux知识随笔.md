@@ -109,3 +109,15 @@ du -s /usr/* | sort -rn | tail
 du -h –-max-depth=0 user
 du -sh –-max-depth=2 | more
 ```
+
+## 进程间通信方式
+参考：[Inter Process Communication(IPC)](https://www.tutorialspoint.com/inter_process_communication/index.htm)
+### 为什么需要进程间通信？
+### pipes
+### named pipes
+### shared memory
+### message queue
+### semaphore
+关于[semaphore的作用以及semaphore和lock的区别](https://blog.csdn.net/zm1_1zm/article/details/76128701)，还是要好好考虑下。互斥量用于线程的互斥，信号量用于线程的同步。互斥量用于解决线程间共享资源的问题，信号量用于调度线程的问题。线程调度就是通过一些机制使得线程按照顺序对资源进行访问。以上是lock和semaphore最核心的区别，另外锁代表了对资源的所有权，所以锁的释放必须由持有锁的线程完成，但是semaphore的释放可以由其他线程完成。
+### signals
+### memory mapping
