@@ -91,7 +91,7 @@ public class Main{
     }
 }
 ```
-***代码3：在main中使用yield，进程让步***
+***代码3：在main中使用yield，进程让步，使线程从运行态变为就绪态***
 ```java
 
 public class Main{  
@@ -108,7 +108,7 @@ public class Main{
         while (Thread.activeCount() > 1) {
 			Thread.yield();
 		}
-        
+
         long end = System.currentTimeMillis();  
         System.out.println("子线程执行时长：" + (end - start));
     }
